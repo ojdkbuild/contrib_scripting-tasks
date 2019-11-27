@@ -14,13 +14,33 @@
  * limitations under the License.
  */
 
-define([
-    "module"
-], function(module) {
+define([], function() {
     "use strict";
 
-    return function() {
-        print(module.id);
-        // todo
+    var System = Packages.java.lang.System;
+
+    function Logger(name) {
+        this.name = name;
+    }
+
+    Logger.prototype = {
+        log: function(level, msg) {
+            System.out.println("[" + level + " " + this.name + "] " + String(msg));
+        },
+
+        info: function(msg) {
+            this.log("info", msg);
+        },
+
+        warn: function(msg) {
+            this.log("WARN", msg);
+        },
+
+        error: function(msg) {
+            this.log("error", msg);
+        }
     };
+
+    return Logger;
+
 });

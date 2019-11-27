@@ -15,12 +15,24 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/isArray",
+    "common/listProperties",
+    "common/Logger"
+], function(module, assert, isArray, listProperties, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    logger.info("run");
+
+    var list = listProperties({
+        foo: 41,
+        bar: 42,
+        baz: 43
+    });
+
+    assert(isArray(list));
+    assert.equal(list, ["foo", "bar", "baz"]);
+
 });

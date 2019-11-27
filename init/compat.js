@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-function print(msg) {
-    var System = Packages.java.lang.System;
-
-    System.out.println(String(msg));
-}
-
 (function(){
     // Rhino Object.keys fix
     // "new String(...)" is not iterable with "for key in .." in Rhino

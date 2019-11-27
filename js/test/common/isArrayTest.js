@@ -15,12 +15,22 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/isArray",
+    "common/Logger"
+], function(module, assert, isArray, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    logger.info("run");
+
+    assert(isArray(["foo", 42]));
+    assert(isArray([]));
+    assert(!isArray(undefined));
+    assert(!isArray(null));
+    assert(!isArray("foo"));
+    assert(!isArray(""));
+    assert(!isArray({}));
+
 });

@@ -15,12 +15,21 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/isNil",
+    "common/Logger"
+], function(module, assert, isNil, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    logger.info("run");
+
+    assert(isNil(undefined));
+    assert(isNil(null));
+    assert(!isNil(0));
+    assert(!isNil([]));
+    assert(!isNil(""));
+    assert(!isNil({}));
+
 });

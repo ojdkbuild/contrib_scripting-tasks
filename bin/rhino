@@ -16,7 +16,7 @@
 
 set -e
 
-APP_DIR="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" && pwd )"
+export ST_APP_DIR="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" && pwd )/"
 
 if [ -z "$JAVA_HOME" ] ; then
     echo "'JAVA_HOME' environment variable must be defined"
@@ -41,6 +41,6 @@ fi
         -cp "$RHINO_HOME"/'*' \
         org.mozilla.javascript.tools.shell.Main \
         -O -1 \
-        "$APP_DIR"/init/runTask.js \
+        "$ST_APP_DIR"init/runTask.js \
         "$*"
 

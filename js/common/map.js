@@ -15,12 +15,20 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "./isArray"
+], function(isArray) {
     "use strict";
 
-    return function() {
-        print(module.id);
-        // todo
+    return function(list, fun) {
+        if (!isArray(list)) throw new Error("Specified collection is not an Array");
+        if (!("function" === typeof(fun))) throw new Error("Specified callback is not a Function");
+ 
+        var res = [];
+        for (var i = 0; i < list.length; i++) {
+            res.push(fun(list[i]));
+        }
+
+        return res;
     };
+
 });

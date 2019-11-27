@@ -15,12 +15,22 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "./isArray",
+    "./isNil"
+], function(isArray, isNil) {
     "use strict";
 
-    return function() {
-        print(module.id);
-        // todo
+    return function(list, elem) {
+        if (!isArray(list)) throw new Error("Specified collection is not an Array");
+        if (isNil(elem)) throw new Error("Specified element is Nil");
+        
+        for (var i = 0; i < list.length; i++) {
+            if (elem === list[i]) {
+                return true;
+            }
+        }
+
+        return false;
     };
+
 });

@@ -15,12 +15,11 @@
  */
 
 define([
-    "module"
-], function(module) {
+], function() {
     "use strict";
 
-    return function() {
-        print(module.id);
-        // todo
+    return function(st) {
+        return "string" === typeof(st);
     };
+
 });

@@ -15,12 +15,29 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "common/Logger"
+], function(module, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
     return function() {
-        print(module.id);
-        // todo
+       logger.info("target started");
+
+        require([
+            // common
+            "test/common/LoggerTest",
+            "test/common/appdirTest",
+            "test/common/copyBytesTest",
+            "test/common/includesTest",
+            "test/common/isArrayTest",
+            "test/common/isNilTest",
+            "test/common/isStringTest",
+            "test/common/listDirectoryTest",
+            "test/common/listPropertiesTest",
+            "test/common/mapTest"
+        ], function() {
+           logger.info("target success");
+        });
     };
 });

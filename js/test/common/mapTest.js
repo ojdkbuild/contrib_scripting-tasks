@@ -15,12 +15,26 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/isArray",
+    "common/map",
+    "common/Logger"
+], function(module, assert, isArray, map, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    logger.info("run");
+
+    var list = map(["foo", "bar", "baz"], function(el) {
+        return el + "42";
+    });
+
+    assert(isArray(list));
+    assert.equal(list.length, 3);
+    assert.equal(list, ["foo42", "bar42", "baz42"]);
+
+    var empty = map([], function() {});
+    assert(isArray(empty));
+    assert.equal(empty.length, 0);
 });

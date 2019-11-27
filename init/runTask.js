@@ -16,13 +16,7 @@
 
 (function(){
     // get app directory
-    var appdir = function() {
-        var clazz = Packages.java.lang.Class.forName("org.mozilla.javascript.tools.shell.Main");
-        var uri = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
-        var file = new Packages.java.io.File(uri);
-        var badslashPath = String(file.getParentFile().getParentFile().getAbsolutePath());
-        return badslashPath.replace(/\\/g, "/");
-    } ();
+    var appdir = Packages.java.lang.System.getenv("ST_APP_DIR");
 
     load(appdir  + "/init/requireConfig.js");
     requireConfig(appdir);

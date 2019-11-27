@@ -15,12 +15,24 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/appdir",
+    "common/isArray",
+    "common/includes",
+    "common/listDirectory",
+    "common/Logger"
+], function(module, assert, appdir, isArray, includes, listDirectory, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    logger.info("run");
+
+    var list = listDirectory(appdir);
+
+    assert(isArray(list));
+    assert(list.length > 0);
+    assert.equal(list[0], ".git");
+    assert(includes(list, ".gitignore"));
+
 });

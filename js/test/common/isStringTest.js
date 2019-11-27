@@ -15,12 +15,23 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/isString",
+    "common/Logger"
+], function(module, assert, isString, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    var JString = Packages.java.lang.String;
+
+    logger.info("run");
+
+    assert(isString("foo"));
+    assert(isString(""));
+    assert(!isString(new String("foo")));
+    assert(!isString(new JString()));
+    assert(!isString(['f', 'o', 'o']));
+    assert(!isString({}));
+
 });

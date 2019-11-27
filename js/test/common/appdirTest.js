@@ -15,12 +15,29 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "common/appdir",
+    "common/isString",
+    "common/Logger"
+], function(module, assert, appdir, isString, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
-    };
+    var Files = Packages.java.nio.file.Files;
+    var Paths = Packages.java.nio.file.Paths;
+
+    logger.info("run");
+
+    assert(isString(appdir));
+
+    var path = Paths.get(appdir);
+
+    assert(Files.exists(path));
+    assert(Files.isDirectory(path));
+
+    var rhino = Paths.get(appdir + "bin/rhino");
+
+    assert(Files.exists(rhino));
+    assert(Files.isRegularFile(rhino));
 });

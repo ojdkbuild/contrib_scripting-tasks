@@ -15,34 +15,39 @@
  */
 
 define([
-    "module",
-    "common/digestFile",
-    "common/Logger",
-    "common/writeFile"
-], function(module, digestFile, Logger, writeFile) {
+    "./hexBytes"
+], function(hexBytes) {
     "use strict";
-    var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
+    var JArray = Packages.java.lang.reflect.Array;
+    var Byte = Packages.java.lang.Byte;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
+    var StandardOpenOption = Packages.java.nio.file.StandardOpenOption;
+    var MessageDigest = Packages.java.security.MessageDigest;
 
-    return function(file) {
-        logger.info("target started");
-
+    return function(file, algorithm) {
         var path = Paths.get(file);
         if (!(Files.exists(path) && Files.isRegularFile(path))) {
             throw new Error("Specified file does not exist, path: [" + path.toAbsolutePath() + "]");
         }
-        logger.info("Reading file, path: [" + path.toAbsolutePath() + "]");
 
-        var hash = digestFile(file, "SHA-256");
-        logger.info("Hash sum computed, value: [" + hash + "]");
+        var buf = JArray.newInstance(Byte.TYPE, 4096);
+        var md = MessageDigest.getInstance(algorithm);
 
-        var dest = Paths.get(path.toAbsolutePath().toString() + ".sha256");
-        writeFile(dest, hash + "  " + path.getFileName());
-        logger.info("Hash sum file written, path: [" + dest.toAbsolutePath() + "]");
+        var is = Files.newInputStream(path, StandardOpenOption.READ);
+        var read = 0;
+        try {
+            while (-1 !== (read = is.read(buf))) {
+                md.update(buf, 0, read);
+            }
+        } finally {
+            is.close();
+        }
 
-        logger.info("target success");
+        var bytes = md.digest();
+
+        return hexBytes(bytes);
     };
+
 });

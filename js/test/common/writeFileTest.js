@@ -16,33 +16,23 @@
 
 define([
     "module",
-    "common/digestFile",
+    "test/assert",
     "common/Logger",
-    "common/writeFile"
-], function(module, digestFile, Logger, writeFile) {
+    "common/writeFile",
+    "test/scratch"
+], function(module, assert, Logger, writeFile, scratch) {
     "use strict";
     var logger = new Logger(module.id);
+
+    logger.info("run");
 
     var JString = Packages.java.lang.String;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(file) {
-        logger.info("target started");
+    var path = Paths.get(scratch + "writeFileTest.txt");;
+    writeFile(path, "foo");
+    var read = String(new JString(Files.readAllBytes(path), "UTF-8"));
 
-        var path = Paths.get(file);
-        if (!(Files.exists(path) && Files.isRegularFile(path))) {
-            throw new Error("Specified file does not exist, path: [" + path.toAbsolutePath() + "]");
-        }
-        logger.info("Reading file, path: [" + path.toAbsolutePath() + "]");
-
-        var hash = digestFile(file, "SHA-256");
-        logger.info("Hash sum computed, value: [" + hash + "]");
-
-        var dest = Paths.get(path.toAbsolutePath().toString() + ".sha256");
-        writeFile(dest, hash + "  " + path.getFileName());
-        logger.info("Hash sum file written, path: [" + dest.toAbsolutePath() + "]");
-
-        logger.info("target success");
-    };
+    assert.equal(read, "foo");
 });

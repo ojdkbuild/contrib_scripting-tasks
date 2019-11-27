@@ -18,7 +18,20 @@ define([
 ], function() {
     "use strict";
 
-    return function() {
-        // todo
+    var FileOutputStream = Packages.java.io.FileOutputStream;
+    var OutputStreamWriter = Packages.java.io.OutputStreamWriter;
+
+    return function(path, data) {
+        var writer = null;
+        try {
+            var fos = new FileOutputStream(path);
+            writer = new OutputStreamWriter(fos, "UTF-8");
+            writer.write(data, 0, data.length);
+        } finally {
+            if (null !== writer) {
+                writer.close();
+            }
+        }
     };
+
 });

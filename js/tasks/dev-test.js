@@ -16,28 +16,41 @@
 
 define([
     "module",
+    "common/isNil",
     "common/Logger"
-], function(module, Logger) {
+], function(module, isNil, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
-    return function() {
-       logger.info("target started");
+    return function(modId) {
+        logger.info("target started");
 
-        require([
-            // common
-            "test/common/LoggerTest",
-            "test/common/appdirTest",
-            "test/common/copyBytesTest",
-            "test/common/includesTest",
-            "test/common/isArrayTest",
-            "test/common/isNilTest",
-            "test/common/isStringTest",
-            "test/common/listDirectoryTest",
-            "test/common/listPropertiesTest",
-            "test/common/mapTest"
-        ], function() {
-           logger.info("target success");
-        });
+        if (isNil(modId)) {
+            require([
+                // common
+                "test/common/LoggerTest",
+                "test/common/appdirTest",
+                "test/common/copyBytesTest",
+                "test/common/copyCharsTest",
+                "test/common/deleteDirectoryTest",
+                "test/common/digestFileTest",
+                "test/common/hexBytesTest",
+                "test/common/includesTest",
+                "test/common/isArrayTest",
+                "test/common/isNilTest",
+                "test/common/isStringTest",
+                "test/common/listDirectoryTest",
+                "test/common/listPropertiesTest",
+                "test/common/mapTest",
+                "test/common/readFileTest",
+                "test/common/writeFileTest"
+            ], function() {
+               logger.info("target success");
+            });
+        } else {
+            require([modId], function() {
+               logger.info("target success");
+            });
+        }
     };
 });

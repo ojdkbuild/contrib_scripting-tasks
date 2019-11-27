@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-define([], function() {
+define([
+    "./includes"
+], function(includes) {
     "use strict";
 
     var System = Packages.java.lang.System;
+
+    var disabledModules = [];
 
     function Logger(name) {
         this.name = name;
@@ -25,7 +29,9 @@ define([], function() {
 
     Logger.prototype = {
         log: function(level, msg) {
-            System.out.println("[" + level + " " + this.name + "] " + String(msg));
+            if (!includes(disabledModules, this.name)) {
+                System.out.println("[" + level + " " + this.name + "] " + String(msg));
+            }
         },
 
         info: function(msg) {
@@ -39,6 +45,10 @@ define([], function() {
         error: function(msg) {
             this.log("error", msg);
         }
+    };
+
+    Logger.disableModule = function(mod) {
+        disabledModules.push(mod);
     };
 
     return Logger;

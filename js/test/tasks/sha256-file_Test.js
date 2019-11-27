@@ -16,10 +16,12 @@
 
 define([
     "module",
-    "common/digestFile",
+    "test/assert",
     "common/Logger",
-    "common/writeFile"
-], function(module, digestFile, Logger, writeFile) {
+    "common/readFile",
+    "tasks/sha256-file",
+    "test/scratch"
+], function(module, assert, Logger, readFile, task, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -27,22 +29,17 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(file) {
-        logger.info("target started");
+    logger.info("run");
+    Logger.disableModule("tasks/sha256-file");
 
-        var path = Paths.get(file);
-        if (!(Files.exists(path) && Files.isRegularFile(path))) {
-            throw new Error("Specified file does not exist, path: [" + path.toAbsolutePath() + "]");
-        }
-        logger.info("Reading file, path: [" + path.toAbsolutePath() + "]");
+    var path = Paths.get(scratch + "sha256Test.txt");;
+    Files.write(path, new JString("foo").getBytes("UTF-8"));
 
-        var hash = digestFile(file, "SHA-256");
-        logger.info("Hash sum computed, value: [" + hash + "]");
+    task(String(path.toAbsolutePath()));
 
-        var dest = Paths.get(path.toAbsolutePath().toString() + ".sha256");
-        writeFile(dest, hash + "  " + path.getFileName());
-        logger.info("Hash sum file written, path: [" + dest.toAbsolutePath() + "]");
+    var destPath = Paths.get(path.toAbsolutePath() + ".sha256");
+    var res = readFile(destPath);
 
-        logger.info("target success");
-    };
+    
+    assert.equal(res, "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae  " + path.getFileName());
 });

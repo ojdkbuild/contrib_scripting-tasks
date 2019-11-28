@@ -17,29 +17,34 @@
 define([
     "module",
     "test/assert",
+    "common/deleteDirectory",
     "common/Logger",
     "common/readFile",
-    "tasks/sha256-file",
+    "common/writeFile",
+    "common/zipDirectory",
+    "tasks/unzip-file",
     "test/scratch"
-], function(module, assert, Logger, readFile, task, scratch) {
+], function(module, assert, deleteDirectory, Logger, readFile, writeFile, zipDirectory, task, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
     logger.info("run");
-    Logger.disableModule("tasks/sha256-file");
+    Logger.disableModule("tasks/unzip-file");
 
-    var path = Paths.get(scratch + "sha256Test.txt");;
-    Files.write(path, new JString("foo").getBytes("UTF-8"));
+    var dir = Paths.get(scratch + "unzip-file_Test");
+    Files.createDirectories(dir);
+    var foo = Paths.get(dir, "foo.txt");
+    var bar = Paths.get(dir, "bar.txt");
+    writeFile(String(foo), "foo");
+    writeFile(String(bar), "bar");
+    var zip = zipDirectory(dir);
+    deleteDirectory(dir);
 
-    task(String(path.toAbsolutePath()));
-
-    var destPath = Paths.get(path.toAbsolutePath() + ".sha256");
-    var res = readFile(destPath);
-
-
-    assert.equal(res, "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae  " + path.getFileName());
+    task(zip);
+    assert(Files.exists(dir) && Files.isDirectory(dir));
+    assert(readFile(String(foo)), "foo");
+    assert(readFile(String(bar)), "bar");
 });

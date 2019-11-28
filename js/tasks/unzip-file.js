@@ -15,10 +15,19 @@
  */
 
 define([
-], function() {
+    "module",
+    "common/Logger",
+    "common/unzipFile"
+], function(module, Logger, unzipFile) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        // todo
+    return function(zipFile) {
+        logger.info("target started");
+        logger.info("Unzipping file, path: [" + zipFile + "]");
+
+        unzipFile(zipFile);
+
+        logger.info("target success");
     };
 });

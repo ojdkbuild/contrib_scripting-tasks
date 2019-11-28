@@ -15,21 +15,14 @@
  */
 
 define([
-    "./isNil",
     "./map"
-], function(isNil, map) {
+], function(map) {
     "use strict";
 
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(root, dir) {
-
-        if (isNil(dir)) {
-            dir = root;
-        }
-
-        var rootPath = Paths.get(root);
+    return function(dir) {
         var dirPath = Paths.get(dir);
 
         var list = [];
@@ -38,7 +31,7 @@ define([
             var iter = ds.iterator();
             while (iter.hasNext()) {
                 var pa = iter.next();
-                list.push(rootPath.relativize(pa.toAbsolutePath()));
+                list.push(pa);
             }
         } finally {
             ds.close();
@@ -55,7 +48,7 @@ define([
         });
 
         return map(list, function(pa) {
-            return String(pa.toString());
+            return String(pa.getFileName());
         });
     };
 

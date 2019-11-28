@@ -24,17 +24,14 @@ define([
     var StringWriter = Packages.java.io.StringWriter;
 
     return function(path) {
-        var fis = null;
+        var fis = new FileInputStream(path);
         try {
-            fis = new FileInputStream(path);
             var reader = new InputStreamReader(fis, "UTF-8");
             var writer = new StringWriter();
             copyChars(reader, writer);
             return String(writer);
         } finally {
-            if (null !== fis) {
-                fis.close();
-            }
+            fis.close();
         }
     };
 });

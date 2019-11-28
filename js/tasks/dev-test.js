@@ -27,6 +27,7 @@ define([
 
         if (isNil(modId)) {
             require([
+                "test/scratch",
                 // common
                 "test/common/LoggerTest",
                 "test/common/appdirTest",
@@ -43,7 +44,13 @@ define([
                 "test/common/listPropertiesTest",
                 "test/common/mapTest",
                 "test/common/readFileTest",
-                "test/common/writeFileTest"
+                "test/common/unzipFileTest",
+                "test/common/writeFileTest",
+                "test/common/zipDirectoryTest",
+                // tasks
+                "test/tasks/sha256-file_Test",
+                "test/tasks/unzip-file_Test",
+                "test/tasks/zip-dir_Test"
             ], function() {
                logger.info("target success");
             });

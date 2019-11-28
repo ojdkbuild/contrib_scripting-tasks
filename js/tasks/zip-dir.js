@@ -15,12 +15,19 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "common/Logger",
+    "common/zipDirectory"
+], function(module, Logger, zipDirectory) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        print(module.id);
-        // todo
+    return function(dir) {
+        logger.info("target started");
+        logger.info("Zipping directory, path: [" + dir + "]");
+
+        zipDirectory(dir);
+
+        logger.info("target success");
     };
 });

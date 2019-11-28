@@ -23,7 +23,6 @@ define([
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
@@ -34,14 +33,15 @@ define([
         if (!(Files.exists(path) && Files.isRegularFile(path))) {
             throw new Error("Specified file does not exist, path: [" + path.toAbsolutePath() + "]");
         }
-        logger.info("Reading file, path: [" + path.toAbsolutePath() + "]");
+        logger.info("Reading file, path: [" + file + "]");
 
         var hash = digestFile(file, "SHA-256");
         logger.info("Hash sum computed, value: [" + hash + "]");
 
-        var dest = Paths.get(path.toAbsolutePath().toString() + ".sha256");
+        var dir = path.getParent();
+        var dest = Paths.get(dir, String(path.getFileName()) + ".sha256");
         writeFile(dest, hash + "  " + path.getFileName());
-        logger.info("Hash sum file written, path: [" + dest.toAbsolutePath() + "]");
+        logger.info("Hash sum file written, path: [" + dest + "]");
 
         logger.info("target success");
     };

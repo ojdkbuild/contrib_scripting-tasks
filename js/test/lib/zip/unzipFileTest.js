@@ -16,15 +16,15 @@
 
 define([
     "module",
-    "test/assert",
     "lib/common/Logger",
     "lib/io/deleteDirectory",
     "lib/io/readFile",
     "lib/io/writeFile",
     "lib/zip/unzipFile",
     "lib/zip/zipDirectory",
+    "test/assert",
     "test/scratch"
-], function(module, assert, Logger, deleteDirectory, readFile, writeFile, unzipFile, zipDirectory, scratch) {
+], function(module, Logger, deleteDirectory, readFile, writeFile, unzipFile, zipDirectory, assert, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 

@@ -16,10 +16,10 @@
 
 define([
     "module",
-    "test/assert",
     "lib/common/isNil",
-    "lib/common/Logger"
-], function(module, assert, isNil, Logger) {
+    "lib/common/Logger",
+    "test/assert"
+], function(module, isNil, Logger, assert) {
     "use strict";
     var logger = new Logger(module.id);
 

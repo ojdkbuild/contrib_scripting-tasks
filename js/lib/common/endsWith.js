@@ -15,10 +15,15 @@
  */
 
 define([
-], function() {
+    "./isNil"
+], function(isNil) {
     "use strict";
 
-    return function() {
-        // todo
+    return function(str, postfix) {
+        if (isNil(str) || isNil(postfix)) {
+            return false;
+        }
+        return str.indexOf(postfix, str.length - postfix.length) !== -1;
     };
+
 });

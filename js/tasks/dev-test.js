@@ -31,6 +31,7 @@ define([
                 // common
                 "test/lib/common/LoggerTest",
                 "test/lib/common/appdirTest",
+                "test/lib/common/endsWithTest",
                 "test/lib/common/includesTest",
                 "test/lib/common/isArrayTest",
                 "test/lib/common/isNilTest",

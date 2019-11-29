@@ -16,10 +16,9 @@
 
 define([
     "module",
-    "lib/common/listDirectory",
-    "lib/common/Logger",
-    "lib/common/signFile"
-], function(module, listDirectory, Logger, signFile) {
+    "../common/Logger",
+    "../io/listDirectory"
+], function(module, Logger, listDirectory) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -55,15 +54,11 @@ define([
     }
 
     return function(dir) {
-        logger.info("task started");
-
         var dirPath = Paths.get(dir);
         if (!(Files.exists(dirPath) && Files.isDirectory(dirPath))) {
             throw new Error("Invalid directory specified, path: [" + dirPath.toAbsolutePath() + "]");
         }
-
         walkAndSign(dirPath);
-
-        logger.info("task success");
     };
+
 });

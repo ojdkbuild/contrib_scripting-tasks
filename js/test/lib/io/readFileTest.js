@@ -16,11 +16,11 @@
 
 define([
     "module",
-    "test/assert",
     "lib/common/Logger",
     "lib/io/readFile",
+    "test/assert",
     "test/scratch"
-], function(module, assert, Logger, readFile, scratch) {
+], function(module, Logger, readFile, assert, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 

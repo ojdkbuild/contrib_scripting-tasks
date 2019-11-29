@@ -15,10 +15,17 @@
  */
 
 define([
-], function() {
+    "module",
+    "lib/common/endsWith",
+    "lib/common/Logger",
+    "test/assert"
+], function(module, endsWith, Logger, assert) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        // todo
-    };
+    logger.info("run");
+
+    assert(endsWith("foo", "oo"));
+    assert(!endsWith("foo", "ar"));
+    assert(!endsWith("foo", null));
 });

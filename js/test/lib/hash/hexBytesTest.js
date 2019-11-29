@@ -16,10 +16,10 @@
 
 define([
     "module",
-    "test/assert",
     "lib/common/Logger",
-    "lib/hash/hexBytes"
-], function(module, assert, Logger, hexBytes) {
+    "lib/hash/hexBytes",
+    "test/assert"
+], function(module, Logger, hexBytes, assert) {
     "use strict";
     var logger = new Logger(module.id);
 

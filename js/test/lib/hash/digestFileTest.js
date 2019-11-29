@@ -16,11 +16,11 @@
 
 define([
     "module",
-    "test/assert",
     "lib/common/appdir",
     "lib/common/Logger",
-    "lib/hash/digestFile"
-], function(module, assert, appdir, Logger, digestFile) {
+    "lib/hash/digestFile",
+    "test/assert"
+], function(module, appdir, Logger, digestFile, assert) {
     "use strict";
     var logger = new Logger(module.id);
 

@@ -21,9 +21,9 @@ define([
 
     var JArray = Packages.java.lang.reflect.Array;
     var Byte = Packages.java.lang.Byte;
+    var FileInputStream = Packages.java.io.FileInputStream;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
-    var StandardOpenOption = Packages.java.nio.file.StandardOpenOption;
     var MessageDigest = Packages.java.security.MessageDigest;
 
     return function(file, algorithm) {
@@ -35,7 +35,7 @@ define([
         var buf = JArray.newInstance(Byte.TYPE, 4096);
         var md = MessageDigest.getInstance(algorithm);
 
-        var is = Files.newInputStream(path, StandardOpenOption.READ);
+        var is = new FileInputStream(file);
         var read = 0;
         try {
             while (-1 !== (read = is.read(buf))) {

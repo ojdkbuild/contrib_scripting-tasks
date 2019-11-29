@@ -20,13 +20,14 @@ define([
     "use strict";
 
     var Charset = Packages.java.nio.charset.Charset;
+    var FileInputStream = Packages.java.io.FileInputStream;
+    var FileOutputStream = Packages.java.io.FileOutputStream;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
-    var StandardOpenOption = Packages.java.nio.file.StandardOpenOption;
     var ZipInputStream = Packages.java.util.zip.ZipInputStream;
 
     function writeFile(path, is) {
-        var os = Files.newOutputStream(path, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+        var os = new FileOutputStream((path.toAbsolutePath()));
         try {
             copyBytes(is, os);
         } finally {
@@ -44,7 +45,7 @@ define([
             throw new Error("Invalid parent direcotry, path: [" + zipFile.toAbsolutePath() + "]");
         }
 
-        var is = Files.newInputStream(path, StandardOpenOption.READ);
+        var is = new FileInputStream(zipFile);
         try {
             var zis = new ZipInputStream(is, Charset.forName("UTF-8"));
             var entry = null;

@@ -22,9 +22,10 @@ define([
     "use strict";
 
     var Charset = Packages.java.nio.charset.Charset;
+    var FileInputStream = Packages.java.io.FileInputStream;
+    var FileOutputStream = Packages.java.io.FileOutputStream;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
-    var StandardOpenOption = Packages.java.nio.file.StandardOpenOption;
     var ZipEntry = Packages.java.util.zip.ZipEntry;
     var ZipOutputStream = Packages.java.util.zip.ZipOutputStream;
 
@@ -40,7 +41,7 @@ define([
             } else {
                 var name = String(root.relativize(pa)).replace(/\\/g, "/");
                 zos.putNextEntry(new ZipEntry(name));
-                var is = Files.newInputStream(pa, StandardOpenOption.READ);
+                var is = new FileInputStream(String(pa.toAbsolutePath()));
                 try {
                     copyBytes(is, zos);
                 } finally {
@@ -65,7 +66,7 @@ define([
         }
 
         var root = dirPath.toAbsolutePath().getParent();
-        var os = Files.newOutputStream(dest, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+        var os = new FileOutputStream(String(dest.toAbsolutePath()));
         try {
             var zos = new ZipOutputStream(os, Charset.forName("UTF-8"));
             zos.setLevel(level);

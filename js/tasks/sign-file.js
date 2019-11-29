@@ -15,10 +15,43 @@
  */
 
 define([
-], function() {
+    "module",
+    "common/digestFile",
+    "common/Logger",
+    "common/signFile",
+    "common/writeHashFile"
+], function(module, digestFile, Logger, signFile, writeHashFile) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        // todo
+    var attempts = 3;
+
+    return function(file, name) {
+        logger.info("task started");
+ 
+        var sha256 = digestFile(file, "SHA-256");
+        logger.info("Signing file, path: [" + file + "], sha256: [" + sha256 + "]");
+
+        var success = false;
+        var codes = [];
+        for (var i = 0; i < attempts; i++) {
+            var code = signFile(file, name);
+            if (0 !== code) {
+                success = true;
+                break;
+            } else {
+                codes.push(code);
+            }
+        }
+        if (!success) {
+            throw new Error("Error signing file, codes: [" + JSON.stringify(codes) + "]");
+        }
+
+        var sha256Signed = digestFile(file, "SHA-256");
+ 
+        writeHashFile(file, sha256Signed, ".sha256");
+        logger.info("Hash file written, path: [" + file + ".sha256" + "]");
+
+        logger.info("task success");
     };
 });

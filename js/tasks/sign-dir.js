@@ -15,10 +15,55 @@
  */
 
 define([
-], function() {
+    "module",
+    "common/listDirectory",
+    "common/Logger",
+    "common/signFile"
+], function(module, listDirectory, Logger, signFile) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return function() {
-        // todo
+    var Files = Packages.java.nio.file.Files;
+    var Paths = Packages.java.nio.file.Paths;
+
+    var attempts = 3;
+
+    function walkAndSign(dirPath) {
+        var list = listDirectory(String(dirPath.toAbsolutePath()));
+        list.forEach(function(en) {
+            var pa = Paths.get(dirPath, en);
+            if (Files.isDirectory(pa)) {
+                walkAndSign(pa);
+            } else {
+                logger.info("Signing file, path: [" + pa + "]");
+                var success = false;
+                var codes = [];
+                for (var i = 0; i < attempts; i++) {
+                    var code = signFile(String(pa.toAbsolutePath()), String(pa.getFileName()));
+                    if (0 !== code) {
+                        success = true;
+                        break;
+                    } else {
+                        codes.push(code);
+                    }
+                }
+                if (!success) {
+                    throw new Error("Error signing file, codes: [" + JSON.stringify(codes) + "]");
+                }
+            }
+        });
+    }
+
+    return function(dir) {
+        logger.info("task started");
+
+        var dirPath = Paths.get(dir);
+        if (!(Files.exists(dirPath) && Files.isDirectory(dirPath))) {
+            throw new Error("Invalid directory specified, path: [" + dirPath.toAbsolutePath() + "]");
+        }
+
+        walkAndSign(dirPath);
+
+        logger.info("task success");
     };
 });

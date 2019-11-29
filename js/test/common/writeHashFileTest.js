@@ -19,21 +19,28 @@ define([
     "test/assert",
     "common/Logger",
     "common/readFile",
+    "common/writeFile",
+    "common/writeHashFile",
     "test/scratch"
-], function(module, assert, Logger, readFile, scratch) {
+], function(module, assert, Logger, readFile, writeFile, writeHashFile, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
     logger.info("run");
 
-    var JString = Packages.java.lang.String;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var file = scratch + "readFileTest.txt";
-    var path = Paths.get(file);
-    Files.write(path, new JString("foo").getBytes("UTF-8"));
-    var read = readFile(file);
+    var file = scratch + "writeHashFileTest.txt";
+    writeFile(file, "foo");
+    
+    writeHashFile(file, "bar", ".boo");
 
-    assert.equal(read, "foo");
+    var hashFile = file + ".boo";
+    var hashPath = Paths.get(hashFile);
+    assert(Files.exists(hashPath));
+    assert(Files.isRegularFile(hashPath));
+
+    var contents = readFile(hashFile);
+    assert.equal(contents, "bar  " + Paths.get(file).getFileName());
 });

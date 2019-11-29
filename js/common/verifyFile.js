@@ -15,25 +15,27 @@
  */
 
 define([
-    "module",
-    "test/assert",
-    "common/Logger",
-    "common/readFile",
-    "test/scratch"
-], function(module, assert, Logger, readFile, scratch) {
+], function() {
     "use strict";
-    var logger = new Logger(module.id);
 
-    logger.info("run");
-
-    var JString = Packages.java.lang.String;
+    var ProcessBuilder = Packages.java.lang.ProcessBuilder;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var file = scratch + "readFileTest.txt";
-    var path = Paths.get(file);
-    Files.write(path, new JString("foo").getBytes("UTF-8"));
-    var read = readFile(file);
+    var signtoolPath = "C:/Program Files (x86)/Windows Kits/10/bin/x64/signtool.exe";
 
-    assert.equal(read, "foo");
+    return function(file, name) {
+        var path = Paths.get(file);
+        if (!(Files.exist(path) && Files.isRegularFile())) {
+            throw new Error("Invalid file specified, path: [" + path.toAbsolutePath() + "]");
+        }
+        return new ProcessBuilder(
+                signtoolPath,
+                "verify",
+                "/v",
+                "/pa",
+                path.toAbsolutePath().toString()
+                ).inheritIO().start().waitFor();
+    };
+
 });

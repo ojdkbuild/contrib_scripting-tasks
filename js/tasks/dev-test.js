@@ -23,7 +23,7 @@ define([
     var logger = new Logger(module.id);
 
     return function(modId) {
-        logger.info("target started");
+        logger.info("task started");
 
         if (isNil(modId)) {
             require([
@@ -46,6 +46,7 @@ define([
                 "test/common/readFileTest",
                 "test/common/unzipFileTest",
                 "test/common/writeFileTest",
+                "test/common/writeHashFileTest",
                 "test/common/zipDirectoryTest",
                 // tasks
                 "test/tasks/sha256-file_Test",
@@ -56,7 +57,7 @@ define([
             });
         } else {
             require([modId], function() {
-               logger.info("target success");
+               logger.info("task success");
             });
         }
     };

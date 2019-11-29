@@ -15,25 +15,27 @@
  */
 
 define([
-    "module",
-    "test/assert",
-    "common/Logger",
-    "common/readFile",
-    "test/scratch"
-], function(module, assert, Logger, readFile, scratch) {
+    "./writeFile"
+], function(writeFile) {
     "use strict";
-    var logger = new Logger(module.id);
 
-    logger.info("run");
-
-    var JString = Packages.java.lang.String;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var file = scratch + "readFileTest.txt";
-    var path = Paths.get(file);
-    Files.write(path, new JString("foo").getBytes("UTF-8"));
-    var read = readFile(file);
+    return function(origFile, hash, extension) {
+        var path = Paths.get(origFile);
+        if (!(Files.exists(path) && Files.isRegularFile(path))) {
+            throw new Error("Invalid original file, path: [" + path.toAbsolutePath() + "]");
+        }
 
-    assert.equal(read, "foo");
+        var dir = path.getParent();
+        var dest = Paths.get(dir, String(path.getFileName()) + extension);
+        if (Files.exists(dest)) {
+            throw new Error("Hash file already exist, path: [" + path.toAbsolutePath() + "]");
+        }
+ 
+        writeFile(dest.toAbsolutePath(), hash + "  " + path.getFileName());
+        return String(dest.toAbsolutePath());
+    };
+
 });

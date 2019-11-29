@@ -23,11 +23,11 @@ define([
     var logger = new Logger(module.id);
 
     return function(zipFile) {
-        logger.info("target started");
+        logger.info("task started");
         logger.info("Unzipping file, path: [" + zipFile + "]");
 
         unzipFile(zipFile);
 
-        logger.info("target success");
+        logger.info("task success");
     };
 });

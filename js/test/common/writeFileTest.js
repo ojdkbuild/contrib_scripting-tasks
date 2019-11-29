@@ -30,8 +30,10 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var path = Paths.get(scratch + "writeFileTest.txt");;
-    writeFile(path, "foo");
+    var file = scratch + "writeFileTest.txt";
+    writeFile(file, "foo");
+
+    var path = Paths.get(file);
     var read = String(new JString(Files.readAllBytes(path), "UTF-8"));
 
     assert.equal(read, "foo");

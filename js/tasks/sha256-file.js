@@ -18,8 +18,8 @@ define([
     "module",
     "common/digestFile",
     "common/Logger",
-    "common/writeFile"
-], function(module, digestFile, Logger, writeFile) {
+    "common/writeHashFile"
+], function(module, digestFile, Logger, writeHashFile) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -27,7 +27,7 @@ define([
     var Paths = Packages.java.nio.file.Paths;
 
     return function(file) {
-        logger.info("target started");
+        logger.info("task started");
 
         var path = Paths.get(file);
         if (!(Files.exists(path) && Files.isRegularFile(path))) {
@@ -38,11 +38,9 @@ define([
         var hash = digestFile(file, "SHA-256");
         logger.info("Hash sum computed, value: [" + hash + "]");
 
-        var dir = path.getParent();
-        var dest = Paths.get(dir, String(path.getFileName()) + ".sha256");
-        writeFile(dest, hash + "  " + path.getFileName());
-        logger.info("Hash sum file written, path: [" + dest + "]");
+        writeHashFile(file, hash, ".sha256");
+        logger.info("Hash file written, path: [" + file + ".sha256" + "]");
 
-        logger.info("target success");
+        logger.info("task success");
     };
 });

@@ -23,11 +23,11 @@ define([
     var logger = new Logger(module.id);
 
     return function(dir) {
-        logger.info("target started");
+        logger.info("task started");
         logger.info("Zipping directory, path: [" + dir + "]");
 
         zipDirectory(dir);
 
-        logger.info("target success");
+        logger.info("task success");
     };
 });

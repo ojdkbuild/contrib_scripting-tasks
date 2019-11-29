@@ -15,13 +15,21 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "test/assert",
+    "lib/common/isNil",
+    "lib/common/Logger"
+], function(module, assert, isNil, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    var Paths = Packages.java.nio.file.Paths;
+    logger.info("run");
 
-    var appdir = module.uri.replace(/\/js\/common\/appdir.js/, "");
-    return Paths.get(appdir).toAbsolutePath().toString() + "/";
+    assert(isNil(undefined));
+    assert(isNil(null));
+    assert(!isNil(0));
+    assert(!isNil([]));
+    assert(!isNil(""));
+    assert(!isNil({}));
 
 });

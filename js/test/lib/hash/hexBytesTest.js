@@ -17,9 +17,9 @@
 define([
     "module",
     "test/assert",
-    "common/hexBytes",
-    "common/Logger"
-], function(module, assert, hexBytes, Logger) {
+    "lib/common/Logger",
+    "lib/hash/hexBytes"
+], function(module, assert, Logger, hexBytes) {
     "use strict";
     var logger = new Logger(module.id);
 

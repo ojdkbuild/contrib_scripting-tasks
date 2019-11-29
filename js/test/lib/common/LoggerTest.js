@@ -15,22 +15,15 @@
  */
 
 define([
-    "./isArray"
-], function(isArray) {
+    "module",
+    "test/assert",
+    "lib/common/Logger"
+], function(module, assert, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    var chars = "0123456789abcdef";
+    logger.info("run");
 
-    return function(bytes) {
-        if (!isArray(bytes)) throw new Error("Specified collection is not an Array");
-
-        var list = [];
-        for (var i = 0; i < bytes.length; i++) {
-            list.push(chars[(bytes[i] >> 4) & 0xf]);
-            list.push(chars[(bytes[i] & 0xf)]);
-        }
-
-        return list.join("");
-    };
+    assert.equal(logger.name, module.id);
 
 });

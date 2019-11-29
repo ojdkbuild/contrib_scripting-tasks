@@ -15,10 +15,10 @@
  */
 
 define([
-    "./copyBytes",
-    "./isNil",
-    "./listDirectory"
-], function(copyBytes, isNil, listDirectory) {
+    "../common/isNil",
+    "../io/copyBytes",
+    "../io/listDirectory"
+], function(isNil, copyBytes, listDirectory) {
     "use strict";
 
     var Charset = Packages.java.nio.charset.Charset;

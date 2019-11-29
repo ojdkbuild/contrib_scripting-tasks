@@ -15,27 +15,27 @@
  */
 
 define([
-    "./writeFile"
-], function(writeFile) {
+    "module",
+    "test/assert",
+    "lib/common/Logger",
+    "lib/io/deleteDirectory",
+    "lib/io/writeFile",
+    "test/scratch"
+], function(module, assert, Logger, deleteDirectory, writeFile, scratch) {
     "use strict";
+    var logger = new Logger(module.id);
 
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(origFile, hash, extension) {
-        var path = Paths.get(origFile);
-        if (!(Files.exists(path) && Files.isRegularFile(path))) {
-            throw new Error("Invalid original file, path: [" + path.toAbsolutePath() + "]");
-        }
+    logger.info("run");
 
-        var dir = path.getParent();
-        var dest = Paths.get(dir, String(path.getFileName()) + extension);
-        if (Files.exists(dest)) {
-            throw new Error("Hash file already exist, path: [" + path.toAbsolutePath() + "]");
-        }
- 
-        writeFile(dest.toAbsolutePath(), hash + "  " + path.getFileName());
-        return String(dest.toAbsolutePath());
-    };
+    var dir = Paths.get(scratch + "deleteDirectoryTest");;
+    var file = Paths.get(dir, "tmp.txt");
+    Files.createDirectory(dir);
+    writeFile(file, "foo");
 
+    deleteDirectory(dir);
+
+    assert(!Files.exists(dir));
 });

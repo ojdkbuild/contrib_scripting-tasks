@@ -17,23 +17,23 @@
 define([
     "module",
     "test/assert",
-    "common/copyBytes",
-    "common/Logger"
-], function(module, assert, copyBytes, Logger) {
+    "lib/common/Logger",
+    "lib/io/readFile",
+    "test/scratch"
+], function(module, assert, Logger, readFile, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
-    var ByteArrayInputStream = Packages.java.io.ByteArrayInputStream;
-    var ByteArrayOutputStream = Packages.java.io.ByteArrayOutputStream;
-
     logger.info("run");
 
-    var src = new JString("foo");
-    var bais = new ByteArrayInputStream(src.getBytes("UTF-8"));
-    var baos = new ByteArrayOutputStream();
-    copyBytes(bais, baos);
-    var dest = new JString(baos.toByteArray(), "UTF-8");
+    var JString = Packages.java.lang.String;
+    var Files = Packages.java.nio.file.Files;
+    var Paths = Packages.java.nio.file.Paths;
 
-    assert.equal(dest, src);
+    var file = scratch + "readFileTest.txt";
+    var path = Paths.get(file);
+    Files.write(path, new JString("foo").getBytes("UTF-8"));
+    var read = readFile(file);
+
+    assert.equal(read, "foo");
 });

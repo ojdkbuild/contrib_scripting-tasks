@@ -16,8 +16,8 @@
 
 define([
     "module",
-    "common/isNil",
-    "common/Logger"
+    "lib/common/isNil",
+    "lib/common/Logger"
 ], function(module, isNil, Logger) {
     "use strict";
     var logger = new Logger(module.id);
@@ -29,25 +29,28 @@ define([
             require([
                 "test/scratch",
                 // common
-                "test/common/LoggerTest",
-                "test/common/appdirTest",
-                "test/common/copyBytesTest",
-                "test/common/copyCharsTest",
-                "test/common/deleteDirectoryTest",
-                "test/common/digestFileTest",
-                "test/common/hexBytesTest",
-                "test/common/includesTest",
-                "test/common/isArrayTest",
-                "test/common/isNilTest",
-                "test/common/isStringTest",
-                "test/common/listDirectoryTest",
-                "test/common/listPropertiesTest",
-                "test/common/mapTest",
-                "test/common/readFileTest",
-                "test/common/unzipFileTest",
-                "test/common/writeFileTest",
-                "test/common/writeHashFileTest",
-                "test/common/zipDirectoryTest",
+                "test/lib/common/LoggerTest",
+                "test/lib/common/appdirTest",
+                "test/lib/common/includesTest",
+                "test/lib/common/isArrayTest",
+                "test/lib/common/isNilTest",
+                "test/lib/common/isStringTest",
+                "test/lib/common/listPropertiesTest",
+                "test/lib/common/mapTest",
+                // hash
+                "test/lib/hash/digestFileTest",
+                "test/lib/hash/hexBytesTest",
+                "test/lib/hash/writeHashFileTest",
+                // io
+                "test/lib/io/copyBytesTest",
+                "test/lib/io/copyCharsTest",
+                "test/lib/io/deleteDirectoryTest",
+                "test/lib/io/listDirectoryTest",
+                "test/lib/io/readFileTest",
+                "test/lib/io/writeFileTest",
+                // zip
+                "test/lib/zip/unzipFileTest",
+                "test/lib/zip/zipDirectoryTest",
                 // tasks
                 "test/tasks/sha256-file_Test",
                 "test/tasks/unzip-file_Test",

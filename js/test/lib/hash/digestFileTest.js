@@ -17,13 +17,16 @@
 define([
     "module",
     "test/assert",
-    "common/Logger"
-], function(module, assert, Logger) {
+    "lib/common/appdir",
+    "lib/common/Logger",
+    "lib/hash/digestFile"
+], function(module, assert, appdir, Logger, digestFile) {
     "use strict";
     var logger = new Logger(module.id);
 
     logger.info("run");
 
-    assert.equal(logger.name, module.id);
+    var sha256 = digestFile(appdir + ".gitignore", "SHA-256");
 
+    assert.equal(sha256, "08410a0485e3e0eb8e7e5c4f8b581faea962d292d2ee5b63cb1b2dd8d0a330d4");
 });

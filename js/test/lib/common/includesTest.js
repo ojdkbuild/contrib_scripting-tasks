@@ -17,24 +17,24 @@
 define([
     "module",
     "test/assert",
-    "common/isArray",
-    "common/map",
-    "common/Logger"
-], function(module, assert, isArray, map, Logger) {
+    "lib/common/includes",
+    "lib/common/Logger"
+], function(module, assert, includes, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
+    var JString = Packages.java.lang.String;
+
     logger.info("run");
 
-    var list = map(["foo", "bar", "baz"], function(el) {
-        return el + "42";
-    });
+    assert(includes(["foo", 42], "foo"));
+    assert(includes(["foo", 42], 42));
+    assert(includes(new JString("foo42").toCharArray(), new JString("f").charAt(0)));
+    assert(!includes(["foo", 42], 43));
+    assert(!includes([], 43));
+    assert.throws(function() { includes(undefined, "foo"); });
+    assert.throws(function() { includes(null, "foo"); });
+    assert.throws(function() { includes("foo42", "foo"); });
+    assert.throws(function() { includes({}, "foo"); });
 
-    assert(isArray(list));
-    assert.equal(list.length, 3);
-    assert.equal(list, ["foo42", "bar42", "baz42"]);
-
-    var empty = map([], function() {});
-    assert(isArray(empty));
-    assert.equal(empty.length, 0);
 });

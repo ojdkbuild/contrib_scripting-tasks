@@ -17,21 +17,30 @@
 define([
     "module",
     "test/assert",
-    "common/isString",
-    "common/Logger"
-], function(module, assert, isString, Logger) {
+    "lib/common/Logger",
+    "lib/hash/writeHashFile",
+    "lib/io/readFile",
+    "lib/io/writeFile",
+    "test/scratch"
+], function(module, assert, Logger, writeHashFile, readFile, writeFile, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
-
     logger.info("run");
 
-    assert(isString("foo"));
-    assert(isString(""));
-    assert(!isString(new String("foo")));
-    assert(!isString(new JString()));
-    assert(!isString(['f', 'o', 'o']));
-    assert(!isString({}));
+    var Files = Packages.java.nio.file.Files;
+    var Paths = Packages.java.nio.file.Paths;
 
+    var file = scratch + "writeHashFileTest.txt";
+    writeFile(file, "foo");
+    
+    writeHashFile(file, "bar", ".boo");
+
+    var hashFile = file + ".boo";
+    var hashPath = Paths.get(hashFile);
+    assert(Files.exists(hashPath));
+    assert(Files.isRegularFile(hashPath));
+
+    var contents = readFile(hashFile);
+    assert.equal(contents, "bar  " + Paths.get(file).getFileName());
 });

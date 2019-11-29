@@ -15,7 +15,7 @@
  */
 
 define([
-    "common/listProperties"
+    "lib/common/listProperties"
 ], function(listProperties) {
     "use strict";
     

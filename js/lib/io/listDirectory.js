@@ -15,7 +15,7 @@
  */
 
 define([
-    "./map"
+    "../common/map"
 ], function(map) {
     "use strict";
 

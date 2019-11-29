@@ -15,7 +15,7 @@
  */
 
 define([
-    "./copyBytes"
+    "../io/copyBytes"
 ], function(copyBytes) {
     "use strict";
 

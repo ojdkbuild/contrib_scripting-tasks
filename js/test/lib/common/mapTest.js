@@ -17,22 +17,24 @@
 define([
     "module",
     "test/assert",
-    "common/isArray",
-    "common/listProperties",
-    "common/Logger"
-], function(module, assert, isArray, listProperties, Logger) {
+    "lib/common/isArray",
+    "lib/common/map",
+    "lib/common/Logger"
+], function(module, assert, isArray, map, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
     logger.info("run");
 
-    var list = listProperties({
-        foo: 41,
-        bar: 42,
-        baz: 43
+    var list = map(["foo", "bar", "baz"], function(el) {
+        return el + "42";
     });
 
     assert(isArray(list));
-    assert.equal(list, ["foo", "bar", "baz"]);
+    assert.equal(list.length, 3);
+    assert.equal(list, ["foo42", "bar42", "baz42"]);
 
+    var empty = map([], function() {});
+    assert(isArray(empty));
+    assert.equal(empty.length, 0);
 });

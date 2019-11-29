@@ -17,8 +17,8 @@
 define([
     "module",
     "test/assert",
-    "common/Logger",
-    "common/writeFile",
+    "lib/common/Logger",
+    "lib/io/writeFile",
     "tasks/zip-dir",
     "test/scratch"
 ], function(module, assert, Logger, writeFile, task, scratch) {

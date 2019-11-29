@@ -16,9 +16,9 @@
 
 define([
     "module",
-    "common/listDirectory",
-    "common/Logger",
-    "common/signFile"
+    "lib/common/listDirectory",
+    "lib/common/Logger",
+    "lib/common/signFile"
 ], function(module, listDirectory, Logger, signFile) {
     "use strict";
     var logger = new Logger(module.id);

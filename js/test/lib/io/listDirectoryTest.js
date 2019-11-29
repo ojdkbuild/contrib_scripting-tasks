@@ -17,25 +17,22 @@
 define([
     "module",
     "test/assert",
-    "common/deleteDirectory",
-    "common/Logger",
-    "common/writeFile",
-    "test/scratch"
-], function(module, assert, deleteDirectory, Logger, writeFile, scratch) {
+    "lib/common/appdir",
+    "lib/common/isArray",
+    "lib/common/includes",
+    "lib/io/listDirectory",
+    "lib/common/Logger"
+], function(module, assert, appdir, isArray, includes, listDirectory, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var Files = Packages.java.nio.file.Files;
-    var Paths = Packages.java.nio.file.Paths;
-
     logger.info("run");
 
-    var dir = Paths.get(scratch + "deleteDirectoryTest");;
-    var file = Paths.get(dir, "tmp.txt");
-    Files.createDirectory(dir);
-    writeFile(file, "foo");
+    var list = listDirectory(appdir);
 
-    deleteDirectory(dir);
+    assert(isArray(list));
+    assert(list.length > 0);
+    assert.equal(list[0], ".git");
+    assert(includes(list, ".gitignore"));
 
-    assert(!Files.exists(dir));
 });

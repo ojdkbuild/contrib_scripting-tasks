@@ -16,8 +16,8 @@
 
 define([
     "module",
-    "common/Logger",
-    "common/unzipFile"
+    "lib/common/Logger",
+    "lib/zip/unzipFile"
 ], function(module, Logger, unzipFile) {
     "use strict";
     var logger = new Logger(module.id);

@@ -16,8 +16,8 @@
 
 define([
     "module",
-    "common/Logger",
-    "common/zipDirectory"
+    "lib/common/Logger",
+    "lib/zip/zipDirectory"
 ], function(module, Logger, zipDirectory) {
     "use strict";
     var logger = new Logger(module.id);

@@ -17,34 +17,24 @@
 define([
     "module",
     "test/assert",
-    "common/deleteDirectory",
-    "common/Logger",
-    "common/readFile",
-    "common/unzipFile",
-    "common/writeFile",
-    "common/zipDirectory",
+    "lib/common/Logger",
+    "lib/io/writeFile",
     "test/scratch"
-], function(module, assert, deleteDirectory, Logger, readFile, unzipFile, writeFile, zipDirectory, scratch) {
+], function(module, assert, Logger, writeFile, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
     logger.info("run");
 
+    var JString = Packages.java.lang.String;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var dir = Paths.get(scratch + "unzipFileTest");
-    Files.createDirectories(dir);
-    var foo = Paths.get(dir, "foo.txt");
-    var bar = Paths.get(dir, "bar.txt");
-    writeFile(String(foo), "foo");
-    writeFile(String(bar), "bar");
-    var zip = zipDirectory(dir);
-    deleteDirectory(dir);
+    var file = scratch + "writeFileTest.txt";
+    writeFile(file, "foo");
 
-    unzipFile(zip);
-    assert(Files.exists(dir) && Files.isDirectory(dir));
-    assert(readFile(String(foo)), "foo");
-    assert(readFile(String(bar)), "bar");
+    var path = Paths.get(file);
+    var read = String(new JString(Files.readAllBytes(path), "UTF-8"));
 
+    assert.equal(read, "foo");
 });

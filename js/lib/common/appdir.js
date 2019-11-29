@@ -15,18 +15,13 @@
  */
 
 define([
-    "module",
-    "test/assert",
-    "common/appdir",
-    "common/digestFile",
-    "common/Logger"
-], function(module, assert, appdir, digestFile, Logger) {
+    "module"
+], function(module) {
     "use strict";
-    var logger = new Logger(module.id);
 
-    logger.info("run");
+    var Paths = Packages.java.nio.file.Paths;
 
-    var sha256 = digestFile(appdir + ".gitignore", "SHA-256");
+    var appdir = module.uri.replace(/\/js\/lib\/common\/appdir.js/, "");
+    return Paths.get(appdir).toAbsolutePath().toString() + "/";
 
-    assert.equal(sha256, "08410a0485e3e0eb8e7e5c4f8b581faea962d292d2ee5b63cb1b2dd8d0a330d4");
 });

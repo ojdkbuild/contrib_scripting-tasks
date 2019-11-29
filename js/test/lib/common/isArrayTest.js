@@ -17,24 +17,20 @@
 define([
     "module",
     "test/assert",
-    "common/Logger",
-    "common/writeFile",
-    "test/scratch"
-], function(module, assert, Logger, writeFile, scratch) {
+    "lib/common/isArray",
+    "lib/common/Logger"
+], function(module, assert, isArray, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
     logger.info("run");
 
-    var JString = Packages.java.lang.String;
-    var Files = Packages.java.nio.file.Files;
-    var Paths = Packages.java.nio.file.Paths;
+    assert(isArray(["foo", 42]));
+    assert(isArray([]));
+    assert(!isArray(undefined));
+    assert(!isArray(null));
+    assert(!isArray("foo"));
+    assert(!isArray(""));
+    assert(!isArray({}));
 
-    var file = scratch + "writeFileTest.txt";
-    writeFile(file, "foo");
-
-    var path = Paths.get(file);
-    var read = String(new JString(Files.readAllBytes(path), "UTF-8"));
-
-    assert.equal(read, "foo");
 });

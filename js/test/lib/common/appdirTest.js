@@ -17,24 +17,27 @@
 define([
     "module",
     "test/assert",
-    "common/includes",
-    "common/Logger"
-], function(module, assert, includes, Logger) {
+    "lib/common/appdir",
+    "lib/common/isString",
+    "lib/common/Logger"
+], function(module, assert, appdir, isString, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
+    var Files = Packages.java.nio.file.Files;
+    var Paths = Packages.java.nio.file.Paths;
 
     logger.info("run");
 
-    assert(includes(["foo", 42], "foo"));
-    assert(includes(["foo", 42], 42));
-    assert(includes(new JString("foo42").toCharArray(), new JString("f").charAt(0)));
-    assert(!includes(["foo", 42], 43));
-    assert(!includes([], 43));
-    assert.throws(function() { includes(undefined, "foo"); });
-    assert.throws(function() { includes(null, "foo"); });
-    assert.throws(function() { includes("foo42", "foo"); });
-    assert.throws(function() { includes({}, "foo"); });
+    assert(isString(appdir));
 
+    var path = Paths.get(appdir);
+
+    assert(Files.exists(path));
+    assert(Files.isDirectory(path));
+
+    var rhino = Paths.get(appdir + "bin/rhino");
+
+    assert(Files.exists(rhino));
+    assert(Files.isRegularFile(rhino));
 });

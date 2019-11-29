@@ -17,19 +17,21 @@
 define([
     "module",
     "test/assert",
-    "common/isNil",
-    "common/Logger"
-], function(module, assert, isNil, Logger) {
+    "lib/common/isString",
+    "lib/common/Logger"
+], function(module, assert, isString, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
+    var JString = Packages.java.lang.String;
+
     logger.info("run");
 
-    assert(isNil(undefined));
-    assert(isNil(null));
-    assert(!isNil(0));
-    assert(!isNil([]));
-    assert(!isNil(""));
-    assert(!isNil({}));
+    assert(isString("foo"));
+    assert(isString(""));
+    assert(!isString(new String("foo")));
+    assert(!isString(new JString()));
+    assert(!isString(['f', 'o', 'o']));
+    assert(!isString({}));
 
 });

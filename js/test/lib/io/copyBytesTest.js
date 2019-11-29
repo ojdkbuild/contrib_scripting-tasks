@@ -17,27 +17,23 @@
 define([
     "module",
     "test/assert",
-    "common/appdir",
-    "common/isString",
-    "common/Logger"
-], function(module, assert, appdir, isString, Logger) {
+    "lib/common/Logger",
+    "lib/io/copyBytes"
+], function(module, assert, Logger, copyBytes) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var Files = Packages.java.nio.file.Files;
-    var Paths = Packages.java.nio.file.Paths;
+    var JString = Packages.java.lang.String;
+    var ByteArrayInputStream = Packages.java.io.ByteArrayInputStream;
+    var ByteArrayOutputStream = Packages.java.io.ByteArrayOutputStream;
 
     logger.info("run");
 
-    assert(isString(appdir));
+    var src = new JString("foo");
+    var bais = new ByteArrayInputStream(src.getBytes("UTF-8"));
+    var baos = new ByteArrayOutputStream();
+    copyBytes(bais, baos);
+    var dest = new JString(baos.toByteArray(), "UTF-8");
 
-    var path = Paths.get(appdir);
-
-    assert(Files.exists(path));
-    assert(Files.isDirectory(path));
-
-    var rhino = Paths.get(appdir + "bin/rhino");
-
-    assert(Files.exists(rhino));
-    assert(Files.isRegularFile(rhino));
+    assert.equal(dest, src);
 });

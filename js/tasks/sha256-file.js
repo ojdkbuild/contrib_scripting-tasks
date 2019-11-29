@@ -16,10 +16,10 @@
 
 define([
     "module",
-    "common/digestFile",
-    "common/Logger",
-    "common/writeHashFile"
-], function(module, digestFile, Logger, writeHashFile) {
+    "lib/common/Logger",
+    "lib/hash/digestFile",
+    "lib/hash/writeHashFile"
+], function(module, Logger, digestFile, writeHashFile) {
     "use strict";
     var logger = new Logger(module.id);
 

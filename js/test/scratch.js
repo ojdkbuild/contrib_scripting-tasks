@@ -16,10 +16,10 @@
 
 define([
     "module",
-    "common/appdir",
-    "common/deleteDirectory",
-    "common/Logger"
-], function(module, appdir, deleteDirectory, Logger) {
+    "lib/common/appdir",
+    "lib/common/Logger",
+    "lib/io/deleteDirectory"
+], function(module, appdir, Logger, deleteDirectory) {
     "use strict";
     var logger = new Logger(module.id);
 

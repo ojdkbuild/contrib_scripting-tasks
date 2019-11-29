@@ -15,24 +15,22 @@
  */
 
 define([
-    "module",
-    "test/assert",
-    "common/appdir",
-    "common/isArray",
-    "common/includes",
-    "common/listDirectory",
-    "common/Logger"
-], function(module, assert, appdir, isArray, includes, listDirectory, Logger) {
+    "../common/isArray"
+], function(isArray) {
     "use strict";
-    var logger = new Logger(module.id);
 
-    logger.info("run");
+    var chars = "0123456789abcdef";
 
-    var list = listDirectory(appdir);
+    return function(bytes) {
+        if (!isArray(bytes)) throw new Error("Specified collection is not an Array");
 
-    assert(isArray(list));
-    assert(list.length > 0);
-    assert.equal(list[0], ".git");
-    assert(includes(list, ".gitignore"));
+        var list = [];
+        for (var i = 0; i < bytes.length; i++) {
+            list.push(chars[(bytes[i] >> 4) & 0xf]);
+            list.push(chars[(bytes[i] & 0xf)]);
+        }
+
+        return list.join("");
+    };
 
 });

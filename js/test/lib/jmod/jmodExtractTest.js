@@ -16,15 +16,13 @@
 
 define([
     "module",
+    "lib/common/appdir",
     "lib/common/Logger",
-    "lib/io/deleteDirectory",
-    "lib/io/readFile",
-    "lib/io/writeFile",
-    "lib/zip/unzipFile",
-    "lib/zip/zipDirectory",
+    "lib/io/listDirectory",
+    "lib/jmod/jmodExtract",
     "test/assert",
     "test/scratch"
-], function(module, Logger, deleteDirectory, readFile, writeFile, unzipFile, zipDirectory, assert, scratch) {
+], function(module, appdir, Logger, listDirectory, jmodExtract, assert, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -33,18 +31,19 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var dir = Paths.get(scratch + "unzipFileTest");
-    Files.createDirectories(dir);
-    var foo = Paths.get(dir, "foo.txt");
-    var bar = Paths.get(dir, "bar.txt");
-    writeFile(String(foo), "foo");
-    writeFile(String(bar), "bar");
-    var zip = zipDirectory(dir);
-    deleteDirectory(dir);
+    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
+    Files.createDirectory(Paths.get(scratch + "jmodDescribeTest"));
+    var jmodPath = Paths.get(scratch + "jmodDescribeTest/jdk.jsobject.jmod");
 
-    unzipFile(zip);
-    assert(Files.exists(dir) && Files.isDirectory(dir));
-    assert.equal(readFile(String(foo)), "foo");
-    assert.equal(readFile(String(bar)), "bar");
+    Files.copy(jmodPathSrc, jmodPath);
 
+    var dir = jmodExtract(String(jmodPath));
+
+    assert.equal(dir, scratch + "jmodDescribeTest/jdk.jsobject");
+    var dirPath = Paths.get(dir);
+    assert(Files.exists(dirPath));
+    assert(Files.isDirectory(dirPath));
+
+    var children = listDirectory(dir);
+    assert.equal(children, ["classes", "legal"]);
 });

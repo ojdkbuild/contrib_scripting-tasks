@@ -32,6 +32,7 @@ define([
                 "test/lib/common/LoggerTest",
                 "test/lib/common/appdirTest",
                 "test/lib/common/endsWithTest",
+                "test/lib/common/filterTest",
                 "test/lib/common/includesTest",
                 "test/lib/common/isArrayTest",
                 "test/lib/common/isNilTest",
@@ -49,6 +50,12 @@ define([
                 "test/lib/io/listDirectoryTest",
                 "test/lib/io/readFileTest",
                 "test/lib/io/writeFileTest",
+                // jmod
+                "test/lib/jmod/jmodBundleTest",
+                "test/lib/jmod/jmodDescribeTest",
+                "test/lib/jmod/jmodExtractTest",
+                "test/lib/jmod/jmodListTest",
+                "test/lib/jmod/jmodToolTest",
                 // zip
                 "test/lib/zip/unzipFileTest",
                 "test/lib/zip/zipDirectoryTest",

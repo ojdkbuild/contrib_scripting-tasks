@@ -16,9 +16,17 @@
 
 define([
     "module",
+    "../common/endsWith",
     "../common/Logger",
-    "../io/listDirectory"
-], function(module, Logger, listDirectory) {
+    "../io/deleteDirectory",
+    "../io/listDirectory",
+    "../jmod/jmodBundle",
+    "../jmod/jmodDescribe",
+    "../jmod/jmodExtract",
+    "../jmod/jmodList",
+    "test/assert"
+], function(module, endsWith, Logger, deleteDirectory, listDirectory,
+        jmodBundle, jmodDescribe, jmodExtract, jmodList, assert) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -33,6 +41,22 @@ define([
             var pa = Paths.get(dirPath, en);
             if (Files.isDirectory(pa)) {
                 walkAndSign(pa);
+            } else if (endsWith(en, ".jmod")) {
+                logger.info("Re-packing JMOD, path: [" + pa + "]");
+                var jmod = String(pa);
+                var descOrig = jmodDescribe(jmod);
+                var contentsOrig = jmodList(jmod);
+                var sizeOrig = Files.size(pa);
+                var dir = jmodExtract(jmod);
+                Files.delete(pa);
+                walkAndSign(Paths.get(dir));
+                jmodBundle(dir);
+                deleteDirectory(dir);
+                assert.equal(jmodDescribe(jmod), descOrig);
+                assert.equal(jmodList(jmod), contentsOrig);
+                var sizeDiff = Files.size(pa) - sizeOrig;
+                // todo: check with sig
+                assert(sizeDiff >= -8 && sizeDiff <= 8);
             } else {
                 logger.info("Signing file, path: [" + pa + "]");
                 var success = false;

@@ -19,7 +19,10 @@ define([
 ], function(listProperties) {
     "use strict";
     
-    function assert(expr) {
+    function assert(expr, sentinel) {
+        if ("undefined" !== typeof(sentinel)) {
+            throw new Error("Invalid 'assert' usage, second argument specified");
+        }
         if (!expr) {
             throw new Error("Assertion failed");
         }
@@ -29,10 +32,14 @@ define([
         if (actual === expected) {
             return;
         }
-        if (actual instanceof Array && expected instanceof Array &&
-                actual.length === expected.length) {
+        if (actual instanceof Array && expected instanceof Array){
+            if (actual.length !== expected.length) {
+                throw new Error("Assertion failed," + 
+                        " expected array length: [" + expected.length + "]" +
+                        " actual array length: [" + actual.length + "]");
+            }
             for (var i = 0; i < actual.length; i++) {
-                assert.equal(actual[i], expected[i], i);
+                assert.equal(actual[i], expected[i], "array index: " + i);
             }
             return;
         }

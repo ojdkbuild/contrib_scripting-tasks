@@ -37,7 +37,7 @@ define([
     var bar = Paths.get(dir, "bar.txt");
     writeFile(String(foo), "foo");
     writeFile(String(bar), "bar");
-    
+
     task(dir);
     var zip = Paths.get(dir.toAbsolutePath() + ".zip");
     assert(Files.exists(zip));

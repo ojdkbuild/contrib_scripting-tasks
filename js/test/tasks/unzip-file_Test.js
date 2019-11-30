@@ -45,6 +45,6 @@ define([
 
     task(zip);
     assert(Files.exists(dir) && Files.isDirectory(dir));
-    assert(readFile(String(foo)), "foo");
-    assert(readFile(String(bar)), "bar");
+    assert.equal(readFile(String(foo)), "foo");
+    assert.equal(readFile(String(bar)), "bar");
 });

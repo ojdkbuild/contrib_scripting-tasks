@@ -16,29 +16,18 @@
 
 define([
     "module",
+    "lib/common/appdir",
     "lib/common/Logger",
-    "lib/io/readFile",
-    "tasks/sha256-file",
-    "test/assert",
-    "test/scratch"
-], function(module, Logger, readFile, task, assert, scratch) {
+    "lib/jmod/jmodDescribe",
+    "test/assert"
+], function(module, appdir, Logger, jmodDescribe, assert) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
-    var Files = Packages.java.nio.file.Files;
-    var Paths = Packages.java.nio.file.Paths;
-
     logger.info("run");
-    Logger.disableModule("tasks/sha256-file");
 
-    var path = Paths.get(scratch + "sha256Test.txt");;
-    Files.write(path, new JString("foo").getBytes("UTF-8"));
+    var desc = jmodDescribe(appdir + "js/test/data/jdk.jsobject.jmod");
 
-    task(String(path.toAbsolutePath()));
-
-    var destPath = Paths.get(path.toAbsolutePath() + ".sha256");
-    var res = readFile(destPath);
-
-    assert.equal(res, "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae  " + path.getFileName());
+    assert(0 === desc[0].indexOf("jdk.jsobject"));
+    assert(0 === desc[desc.length - 1].indexOf("platform "));
 });

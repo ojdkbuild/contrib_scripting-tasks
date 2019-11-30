@@ -16,29 +16,25 @@
 
 define([
     "module",
+    "lib/common/isArray",
+    "lib/common/filter",
     "lib/common/Logger",
-    "lib/io/readFile",
-    "tasks/sha256-file",
-    "test/assert",
-    "test/scratch"
-], function(module, Logger, readFile, task, assert, scratch) {
+    "test/assert"
+], function(module, isArray, filter, Logger, assert) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var JString = Packages.java.lang.String;
-    var Files = Packages.java.nio.file.Files;
-    var Paths = Packages.java.nio.file.Paths;
-
     logger.info("run");
-    Logger.disableModule("tasks/sha256-file");
 
-    var path = Paths.get(scratch + "sha256Test.txt");;
-    Files.write(path, new JString("foo").getBytes("UTF-8"));
+    var list = filter(["foo", "bar", "baz"], function(el) {
+        return "bar" !== el;
+    });
 
-    task(String(path.toAbsolutePath()));
+    assert(isArray(list));
+    assert.equal(list.length, 2);
+    assert.equal(list, ["foo", "baz"]);
 
-    var destPath = Paths.get(path.toAbsolutePath() + ".sha256");
-    var res = readFile(destPath);
-
-    assert.equal(res, "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae  " + path.getFileName());
+    var empty = filter([], function() {});
+    assert(isArray(empty));
+    assert.equal(empty.length, 0);
 });

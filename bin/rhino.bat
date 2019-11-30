@@ -15,7 +15,7 @@ rem See the License for the specific language governing permissions and
 rem limitations under the License.
 
 set BAD_SLASH_APP_DIR=%~dp0..
-set APP_DIR=%BAD_SLASH_APP_DIR:\=/%
+set ST_APP_DIR=%BAD_SLASH_APP_DIR:\=/%
 
 if "x" == "x%JAVA_HOME%" (
     echo "'JAVA_HOME' environment variable must be defined"
@@ -38,8 +38,9 @@ if "x" == "x%1" (
         -XX:+TieredCompilation ^
         -XX:TieredStopAtLevel=1 ^
         -cp "%RHINO_HOME%"/* ^
+        --add-exports jdk.jlink/jdk.tools.jmod=ALL-UNNAMED \
         org.mozilla.javascript.tools.shell.Main ^
         -O -1 ^
-        "%APP_DIR%"/init/runTask.js ^
+        "%ST_APP_DIR%"/init/runTask.js ^
         "%*"
 

@@ -32,13 +32,13 @@ if "x" == "x%1" (
     exit /b 1
 )
 
-"$JAVA_HOME"/bin/java ^
+"%JAVA_HOME%\bin\java" ^
         -XX:MaxRAM=256M ^
         -XX:+UseSerialGC ^
         -XX:+TieredCompilation ^
         -XX:TieredStopAtLevel=1 ^
         -cp "%RHINO_HOME%"/* ^
-        --add-exports jdk.jlink/jdk.tools.jmod=ALL-UNNAMED \
+        --add-exports jdk.jlink/jdk.tools.jmod=ALL-UNNAMED ^
         org.mozilla.javascript.tools.shell.Main ^
         -O -1 ^
         "%ST_APP_DIR%"/init/runTask.js ^

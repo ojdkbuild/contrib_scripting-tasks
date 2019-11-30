@@ -39,7 +39,7 @@ define([
 
     var dir = jmodExtract(String(jmodPath));
 
-    assert.equal(dir, scratch + "jmodDescribeTest/jdk.jsobject");
+    assert.equal(dir, String(Paths.get(scratch + "jmodDescribeTest/jdk.jsobject")));
     var dirPath = Paths.get(dir);
     assert(Files.exists(dirPath));
     assert(Files.isDirectory(dirPath));

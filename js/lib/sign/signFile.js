@@ -15,7 +15,7 @@
  */
 
 define([
-    "./isString"
+    "../common/isString"
 ], function(isString) {
     "use strict";
 
@@ -28,7 +28,7 @@ define([
     var vendor = "Red Hat";
     var algorithm = "SHA256";
 
-    return function(file, name) {
+    return function(file, name, mock) {
         var path = Paths.get(file);
         if (!(Files.exists(path) && Files.isRegularFile(path))) {
             throw new Error("Invalid file specified, path: [" + path.toAbsolutePath() + "]");
@@ -37,16 +37,20 @@ define([
             throw new Error("Invalid name specified, value: [" + name + "]");
         }
 
-        return new ProcessBuilder(
-                signtoolPath,
-                "sign",
-                "/v",
-                "/n", vendor,
-                "/fd", algorithm,
-                "/tr", timestampUrl,
-                "/d", name,
-                path.toAbsolutePath().toString()
-                ).inheritIO().start().waitFor();
+        if (true !== mock) {
+            return new ProcessBuilder(
+                    signtoolPath,
+                    "sign",
+                    "/v",
+                    "/n", vendor,
+                    "/fd", algorithm,
+                    "/tr", timestampUrl,
+                    "/d", name,
+                    path.toAbsolutePath().toString()
+                    ).inheritIO().start().waitFor();
+        } else {
+            return 0;
+        }
     };
 
 });

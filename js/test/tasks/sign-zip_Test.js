@@ -16,12 +16,15 @@
 
 define([
     "module",
+    "lib/common/appdir",
     "lib/common/Logger",
+    "lib/io/deleteDirectory",
     "lib/io/writeFile",
-    "tasks/zip-dir",
+    "lib/zip/zipDirectory",
+    "tasks/sign-zip",
     "test/assert",
     "test/scratch"
-], function(module, Logger, writeFile, task, assert, scratch) {
+], function(module, appdir, Logger, deleteDirectory, writeFile, zipDirectory, task, assert, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -29,16 +32,24 @@ define([
     var Paths = Packages.java.nio.file.Paths;
 
     logger.info("run");
-    Logger.disableModule("tasks/zip-dir");
+    Logger.disableModule("lib/sign/walkAndSign");
+    Logger.disableModule("tasks/sign-zip");
 
-    var dir = Paths.get(scratch + "zip-dir_Test");
+    var dir = Paths.get(scratch + "sign-zip_Test");
     Files.createDirectory(dir);
-    var foo = Paths.get(dir, "foo.txt");
-    var bar = Paths.get(dir, "bar.txt");
-    writeFile(String(foo), "foo");
-    writeFile(String(bar), "bar");
+    var subdir = Paths.get(dir, "sub");
+    Files.createDirectory(subdir);
+    writeFile(String(subdir) + "/foo.dll", "foo");
+    writeFile(String(dir) + "/bar.txt", "bar");
+    var jmodSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
+    var jmodDest = Paths.get(subdir, "jdk.jsobject.jmod");
+    Files.copy(jmodSrc, jmodDest);
 
-    task(dir);
-    var zip = Paths.get(dir.toAbsolutePath() + ".zip");
-    assert(Files.exists(zip));
+    var zip = zipDirectory(dir);
+    deleteDirectory(dir);
+
+    task(zip, true);
+
+    var hashPath = Paths.get(zip + ".sha256");
+    assert(Files.exists(hashPath));
 });

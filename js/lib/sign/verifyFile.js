@@ -24,18 +24,22 @@ define([
 
     var signtoolPath = "C:/Program Files (x86)/Windows Kits/10/bin/x64/signtool.exe";
 
-    return function(file, name) {
+    return function(file, mock) {
         var path = Paths.get(file);
-        if (!(Files.exist(path) && Files.isRegularFile())) {
+        if (!(Files.exists(path) && Files.isRegularFile(path))) {
             throw new Error("Invalid file specified, path: [" + path.toAbsolutePath() + "]");
         }
-        return new ProcessBuilder(
-                signtoolPath,
-                "verify",
-                "/v",
-                "/pa",
-                path.toAbsolutePath().toString()
-                ).inheritIO().start().waitFor();
+        if (true !== mock) {
+            return new ProcessBuilder(
+                    signtoolPath,
+                    "verify",
+                    "/v",
+                    "/pa",
+                    path.toAbsolutePath().toString()
+                    ).inheritIO().start().waitFor();
+        } else {
+            return 0;
+        }
     };
 
 });

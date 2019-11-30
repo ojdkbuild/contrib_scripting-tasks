@@ -16,17 +16,18 @@
 
 define([
     "module",
-    "lib/common/digestFile",
     "lib/common/Logger",
-    "lib/common/signFile",
-    "lib/common/writeHashFile"
-], function(module, digestFile, Logger, signFile, writeHashFile) {
+    "lib/hash/digestFile",
+    "lib/hash/writeHashFile",
+    "lib/sign/signFile",
+    "lib/sign/verifyFile"
+], function(module, Logger, digestFile, writeHashFile, signFile, verifyFile) {
     "use strict";
     var logger = new Logger(module.id);
 
     var attempts = 3;
 
-    return function(file, name) {
+    return function(file, name, mock) {
         logger.info("task started");
  
         var sha256 = digestFile(file, "SHA-256");
@@ -35,8 +36,8 @@ define([
         var success = false;
         var codes = [];
         for (var i = 0; i < attempts; i++) {
-            var code = signFile(file, name);
-            if (0 !== code) {
+            var code = signFile(file, name, mock);
+            if (0 === code) {
                 success = true;
                 break;
             } else {
@@ -45,6 +46,10 @@ define([
         }
         if (!success) {
             throw new Error("Error signing file, codes: [" + JSON.stringify(codes) + "]");
+        }
+        var vcode = verifyFile(file, mock);
+        if (0 !== vcode) {
+            throw new Error("Error verifying file, code: [" + vcode + "]");
         }
 
         var sha256Signed = digestFile(file, "SHA-256");

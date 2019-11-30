@@ -15,20 +15,15 @@
  */
 
 define([
-    "module",
-    "lib/common/appdir",
-    "lib/common/Logger",
-    "lib/common/startsWith",
-    "lib/jmod/jmodDescribe",
-    "test/assert"
-], function(module, appdir, Logger, startsWith, jmodDescribe, assert) {
+    "./isNil"
+], function(isNil) {
     "use strict";
-    var logger = new Logger(module.id);
 
-    logger.info("run");
+    return function(str, postfix) {
+        if (isNil(str) || isNil(postfix)) {
+            return false;
+        }
+        return 0 === str.indexOf(postfix);
+    };
 
-    var desc = jmodDescribe(appdir + "js/test/data/jdk.jsobject.jmod");
-
-    assert(startsWith(desc[0], "jdk.jsobject"));
-    assert(startsWith(desc[desc.length - 1], "platform "));
 });

@@ -30,7 +30,7 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(zipFile) {
+    return function(zipFile, mock) {
         logger.info("task started");
 
         if (!endsWith(zipFile, ".zip")) {
@@ -45,7 +45,7 @@ define([
 
         var dir = zipFile.replace(/\.zip$/, "");
         logger.info("Signing bundle files, path: [" + dir + "]");
-        walkAndSign(dir);
+        walkAndSign(dir, mock);
 
         logger.info("Removing original ZIP file");
         var zipFilePath = Paths.get(zipFile);

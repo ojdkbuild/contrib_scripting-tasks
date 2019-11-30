@@ -39,6 +39,7 @@ define([
                 "test/lib/common/isStringTest",
                 "test/lib/common/listPropertiesTest",
                 "test/lib/common/mapTest",
+                "test/lib/common/startsWithTest",
                 // hash
                 "test/lib/hash/digestFileTest",
                 "test/lib/hash/hexBytesTest",
@@ -56,11 +57,17 @@ define([
                 "test/lib/jmod/jmodExtractTest",
                 "test/lib/jmod/jmodListTest",
                 "test/lib/jmod/jmodToolTest",
+                // sign
+                "test/lib/sign/signFileTest",
+                "test/lib/sign/verifyFileTest",
+                "test/lib/sign/walkAndSignTest",
                 // zip
                 "test/lib/zip/unzipFileTest",
                 "test/lib/zip/zipDirectoryTest",
                 // tasks
                 "test/tasks/sha256-file_Test",
+                "test/tasks/sign-file_Test",
+                "test/tasks/sign-zip_Test",
                 "test/tasks/unzip-file_Test",
                 "test/tasks/zip-dir_Test"
             ], function() {

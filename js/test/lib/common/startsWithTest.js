@@ -16,29 +16,16 @@
 
 define([
     "module",
+    "lib/common/startsWith",
     "lib/common/Logger",
-    "lib/io/writeFile",
-    "tasks/zip-dir",
-    "test/assert",
-    "test/scratch"
-], function(module, Logger, writeFile, task, assert, scratch) {
+    "test/assert"
+], function(module, startsWith, Logger, assert) {
     "use strict";
     var logger = new Logger(module.id);
 
-    var Files = Packages.java.nio.file.Files;
-    var Paths = Packages.java.nio.file.Paths;
-
     logger.info("run");
-    Logger.disableModule("tasks/zip-dir");
 
-    var dir = Paths.get(scratch + "zip-dir_Test");
-    Files.createDirectory(dir);
-    var foo = Paths.get(dir, "foo.txt");
-    var bar = Paths.get(dir, "bar.txt");
-    writeFile(String(foo), "foo");
-    writeFile(String(bar), "bar");
-
-    task(dir);
-    var zip = Paths.get(dir.toAbsolutePath() + ".zip");
-    assert(Files.exists(zip));
+    assert(startsWith("foo", "fo"));
+    assert(!startsWith("foo", "ar"));
+    assert(!startsWith("foo", null));
 });

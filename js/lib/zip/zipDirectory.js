@@ -53,21 +53,21 @@ define([
     }
 
     return function(dir, level) {
-        var dirPath = Paths.get(dir);
+        var dirPath = Paths.get(dir).toAbsolutePath();
         if (!Files.isDirectory(dirPath)) {
-            throw new Error("Invalid directory specified, path: [" + dirPath.toAbsolutePath() + "]");
+            throw new Error("Invalid directory specified, path: [" + dirPath + "]");
         }
         var dest = Paths.get(dir.toString() + ".zip");
         if (Files.exists(dest)) {
-            throw new Error("Destination ZIP file already exists, path: [" + dest.toAbsolutePath() + "]");
+            throw new Error("Destination ZIP file already exists, path: [" + dest + "]");
         }
         if (isNil(level)) {
             level = 9;
         }
 
-        var root = dirPath.toAbsolutePath().getParent();
+        var root = dirPath.getParent();
         if (null === root) {
-            throw new Error("Invalid parent directory, path: [" + dirPath.toAbsolutePath() + "]");
+            throw new Error("Invalid parent directory, path: [" + dirPath + "]");
         }
         var os = new FileOutputStream(String(dest.toAbsolutePath()));
         try {

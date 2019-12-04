@@ -38,11 +38,11 @@ define([
     return function(zipFile) {
         var path = Paths.get(zipFile);
         if (!Files.isRegularFile(path)) {
-            throw new Error("Invalid input file specified, path: [" + zipFile.toAbsolutePath() + "]");
+            throw new Error("Invalid input file specified, path: [" + path.toAbsolutePath() + "]");
         }
-        var dir = path.getParent();
+        var dir = path.toAbsolutePath().getParent();
         if (null === dir) {
-            throw new Error("Invalid parent direcotry, path: [" + zipFile.toAbsolutePath() + "]");
+            throw new Error("Invalid parent directory, path: [" + path.toAbsolutePath() + "]");
         }
 
         var is = new FileInputStream(zipFile);

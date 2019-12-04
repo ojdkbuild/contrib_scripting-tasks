@@ -28,7 +28,10 @@ define([
             throw new Error("Invalid original file, path: [" + path.toAbsolutePath() + "]");
         }
 
-        var dir = path.getParent();
+        var dir = path.toAbsolutePath().getParent();
+        if (null === dir) {
+            throw new Error("Invalid parent directory, path: [" + path.toAbsolutePath() + "]");
+        }
         var dest = Paths.get(dir, String(path.getFileName()) + extension);
         if (Files.exists(dest)) {
             throw new Error("Hash file already exist, path: [" + path.toAbsolutePath() + "]");

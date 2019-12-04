@@ -66,6 +66,9 @@ define([
         }
 
         var root = dirPath.toAbsolutePath().getParent();
+        if (null === root) {
+            throw new Error("Invalid parent directory, path: [" + dirPath.toAbsolutePath() + "]");
+        }
         var os = new FileOutputStream(String(dest.toAbsolutePath()));
         try {
             var zos = new ZipOutputStream(os, Charset.forName("UTF-8"));

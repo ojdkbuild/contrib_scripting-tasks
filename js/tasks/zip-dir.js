@@ -22,11 +22,11 @@ define([
     "use strict";
     var logger = new Logger(module.id);
 
-    return function(dir) {
+    return function(dir, level) {
         logger.info("task started");
-        logger.info("Zipping directory, path: [" + dir + "]");
+        logger.info("Zipping directory, path: [" + dir + "], level: [" + level + "]");
 
-        zipDirectory(dir);
+        zipDirectory(dir, level);
 
         logger.info("task success");
     };

@@ -16,9 +16,8 @@
 
 define([
     "../common/isNil",
-    "../io/copyBytes",
-    "../io/listDirectory"
-], function(isNil, copyBytes, listDirectory) {
+    "../io/copyBytes"
+], function(isNil, copyBytes) {
     "use strict";
 
     var Charset = Packages.java.nio.charset.Charset;
@@ -29,35 +28,12 @@ define([
     var ZipEntry = Packages.java.util.zip.ZipEntry;
     var ZipOutputStream = Packages.java.util.zip.ZipOutputStream;
 
-    function walkAndZip(root, zos, dirPath) {
-        var dirName = String(root.relativize(dirPath)).replace(/\\/g, "/") + "/";
-        zos.putNextEntry(new ZipEntry(dirName));
-        zos.closeEntry();
-        var list = listDirectory(String(dirPath.toAbsolutePath()));
-        list.forEach(function(en) {
-            var pa = Paths.get(dirPath, en);
-            if (Files.isDirectory(pa)) {
-                walkAndZip(root, zos, pa);
-            } else {
-                var name = String(root.relativize(pa)).replace(/\\/g, "/");
-                zos.putNextEntry(new ZipEntry(name));
-                var is = new FileInputStream(String(pa.toAbsolutePath()));
-                try {
-                    copyBytes(is, zos);
-                } finally {
-                    is.close();
-                }
-                zos.closeEntry();
-            }
-        });
-    }
-
-    return function(dir, level) {
-        var dirPath = Paths.get(dir).toAbsolutePath();
-        if (!Files.isDirectory(dirPath)) {
-            throw new Error("Invalid directory specified, path: [" + dirPath + "]");
+    return function(file, level) {
+        var filePath = Paths.get(file).toAbsolutePath();
+        if (!Files.isRegularFile(filePath)) {
+            throw new Error("Invalid file specified, path: [" + filePath + "]");
         }
-        var dest = Paths.get(dir + ".zip");
+        var dest = Paths.get(file + ".zip");
         if (Files.exists(dest)) {
             throw new Error("Destination ZIP file already exists, path: [" + dest + "]");
         }
@@ -65,15 +41,20 @@ define([
             level = 9;
         }
 
-        var root = dirPath.getParent();
-        if (null === root) {
-            throw new Error("Invalid parent directory, path: [" + dirPath + "]");
-        }
         var os = new FileOutputStream(String(dest.toAbsolutePath()));
         try {
             var zos = new ZipOutputStream(os, Charset.forName("UTF-8"));
             zos.setLevel(level);
-            walkAndZip(root, zos, dirPath);
+
+            zos.putNextEntry(new ZipEntry(filePath.getFileName()));
+            var is = new FileInputStream(String(filePath.toAbsolutePath()));
+            try {
+                copyBytes(is, zos);
+            } finally {
+                is.close();
+            }
+            zos.closeEntry();
+
             zos.close();
         } finally {
             os.close();

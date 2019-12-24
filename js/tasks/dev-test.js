@@ -64,12 +64,14 @@ define([
                 // zip
                 "test/lib/zip/unzipFileTest",
                 "test/lib/zip/zipDirectoryTest",
+                "test/lib/zip/zipFileTest",
                 // tasks
                 "test/tasks/sha256-file_Test",
                 "test/tasks/sign-file_Test",
                 "test/tasks/sign-zip_Test",
                 "test/tasks/unzip-file_Test",
-                "test/tasks/zip-dir_Test"
+                "test/tasks/zip-dir_Test",
+                "test/tasks/zip-solid_Test"
             ], function() {
                logger.info("target success");
             });

@@ -42,11 +42,11 @@ define([
                     signtoolPath,
                     "sign",
                     "/v",
-                    "/n", vendor,
-                    "/fd", algorithm,
-                    "/tr", timestampUrl,
-                    "/d", name,
-                    path.toAbsolutePath().toString()
+                    "/n", "\"" + vendor + "\"",
+                    "/fd", "\"" + algorithm + "\"",
+                    "/tr", "\"" + timestampUrl + "\"",
+                    "/d", "\"" + name + "\"",
+                    "\"" + path.toAbsolutePath().toString() + "\""
                     ).inheritIO().start().waitFor();
         } else {
             return 0;

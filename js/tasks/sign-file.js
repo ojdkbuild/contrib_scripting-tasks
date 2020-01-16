@@ -16,12 +16,13 @@
 
 define([
     "module",
+    "lib/common/isString",
     "lib/common/Logger",
     "lib/hash/digestFile",
     "lib/hash/writeHashFile",
     "lib/sign/signFile",
     "lib/sign/verifyFile"
-], function(module, Logger, digestFile, writeHashFile, signFile, verifyFile) {
+], function(module, isString, Logger, digestFile, writeHashFile, signFile, verifyFile) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -29,14 +30,20 @@ define([
 
     return function(file, name, mock) {
         logger.info("task started");
- 
+
+        if (!isString(name)) {
+            throw new Error("Signature name must be specified as a second argument");
+        }
+        // rhino changes spaces to commas early during init
+        var nameClean = name.split(",").join(" ");
+
         var sha256 = digestFile(file, "SHA-256");
-        logger.info("Signing file, path: [" + file + "], sha256: [" + sha256 + "]");
+        logger.info("Signing file, path: [" + file + "], sha256: [" + sha256 + "], name: [" + nameClean + "]");
 
         var success = false;
         var codes = [];
         for (var i = 0; i < attempts; i++) {
-            var code = signFile(file, name, mock);
+            var code = signFile(file, nameClean, mock);
             if (0 === code) {
                 success = true;
                 break;

@@ -32,7 +32,7 @@ define([
 
     assert(isArray(list));
     assert(list.length > 0);
-    assert.equal(list[0], ".git");
+    //assert.equal(list[0], ".git");
     assert(includes(list, ".gitignore"));
 
 });

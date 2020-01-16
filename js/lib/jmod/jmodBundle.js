@@ -15,9 +15,10 @@
  */
 
 define([
+    "../common/startsWith",
     "../io/listDirectory",
     "./jmodTool"
-], function(listDirectory, jmodTool) {
+], function(startsWith, listDirectory, jmodTool) {
     "use strict";
 
     var PrintWriter = Packages.java.io.PrintWriter;
@@ -55,6 +56,12 @@ define([
             }
             args.push(dir + "/" + ch);
         });
+
+        if (startsWith(destPath.getFileName().toString(), "jdk.incubator.")) {
+            args.push("--do-not-resolve-by-default");
+            args.push("--warn-if-resolved=incubating");
+        }
+
         args.push(dir + ".jmod");
 
         var sw = new StringWriter();

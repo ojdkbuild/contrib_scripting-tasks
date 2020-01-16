@@ -26,8 +26,8 @@ define([
 
     logger.info("run");
 
-    var contents = jmodList(appdir + "js/test/data/jdk.jsobject.jmod");
+    var contents = jmodList(appdir + "js/test/data/jdk.net.jmod");
 
-    assert.equal(contents[0], "classes/jdk/internal/netscape/javascript/spi/JSObjectProvider.class");
+    assert.equal(contents[0], "classes/jdk/net/ExtendedSocketOptions$1.class");
     assert.equal(contents[contents.length - 1], "legal/LICENSE");
 });

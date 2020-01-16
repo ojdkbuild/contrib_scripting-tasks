@@ -33,9 +33,9 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
+    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.net.jmod");
     Files.createDirectory(Paths.get(scratch + "jmodBundleTest"));
-    var jmodPath = Paths.get(scratch + "jmodBundleTest/jdk.jsobject.jmod");
+    var jmodPath = Paths.get(scratch + "jmodBundleTest/jdk.net.jmod");
 
     Files.copy(jmodPathSrc, jmodPath);
 

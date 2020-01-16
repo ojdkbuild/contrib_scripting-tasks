@@ -86,7 +86,6 @@ define([
     }
 
     function walkAndSign(dirPath, mock) {
-        logger.info("Signing directory, path: [" + dirPath + "]");
         var list = listDirectory(String(dirPath.toAbsolutePath()));
         var jbasePath = null;
         list.forEach(function(en) {
@@ -106,7 +105,7 @@ define([
                 deleteDirectory(dir);
                 assert.equal(jmodDescribe(jmod), descOrig);
                 assert.equal(jmodList(jmod), contentsOrig);
-                //var sizeDiff = Files.size(pa) - sizeOrig;
+                var sizeDiff = Files.size(pa) - sizeOrig;
                 //assert(sizeDiff >= -8 && sizeDiff <= 8);
                 if ("java.base.jmod" === en) {
                     jbasePath = String(pa.toAbsolutePath());
@@ -133,15 +132,22 @@ define([
                     throw new Error("Error verifying file, code: [" + vcode + "]");
                 }
             } else {
-                logger.info("Skipping file, path: [" + pa + "]");
+                //logger.info("Skipping file, path: [" + pa + "]");
             } 
         });
         if (!isNil(jbasePath)) {
-            jmodHash(jbasePath);
+            // jdk11 list
+            jmodHash(jbasePath, [
+                "java.compiler",
+                "jdk.aot",
+                "jdk.internal.vm.compiler",
+                "jdk.internal.vm.compiler.management"
+            ]);
         }
     }
 
     return function(dir, mock) {
+        logger.info("Signing directory, path: [" + dir + "]");
         var dirPath = Paths.get(dir);
         if (!(Files.exists(dirPath) && Files.isDirectory(dirPath))) {
             throw new Error("Invalid directory specified, path: [" + dirPath.toAbsolutePath() + "]");

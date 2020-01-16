@@ -55,6 +55,7 @@ define([
                 "test/lib/jmod/jmodBundleTest",
                 "test/lib/jmod/jmodDescribeTest",
                 "test/lib/jmod/jmodExtractTest",
+                "test/lib/jmod/jmodHashTest",
                 "test/lib/jmod/jmodListTest",
                 "test/lib/jmod/jmodToolTest",
                 // sign

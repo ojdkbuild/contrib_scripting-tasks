@@ -34,8 +34,8 @@ define([
 
     var dir = Paths.get(scratch + "walkAndSignTest");
     Files.createDirectory(dir);
-    var jmodSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
-    var jmodDest = Paths.get(dir, "jdk.jsobject.jmod");
+    var jmodSrc = Paths.get(appdir + "js/test/data/jdk.net.jmod");
+    var jmodDest = Paths.get(dir, "jdk.net.jmod");
     Files.copy(jmodSrc, jmodDest);
     writeFile(scratch + "walkAndSignTest/foo.txt", "foo");
     var subdir = Paths.get(dir, "bar");

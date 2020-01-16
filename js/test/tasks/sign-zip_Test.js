@@ -41,8 +41,8 @@ define([
     Files.createDirectory(subdir);
     writeFile(String(subdir) + "/foo.dll", "foo");
     writeFile(String(dir) + "/bar.txt", "bar");
-    var jmodSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
-    var jmodDest = Paths.get(subdir, "jdk.jsobject.jmod");
+    var jmodSrc = Paths.get(appdir + "js/test/data/jdk.net.jmod");
+    var jmodDest = Paths.get(subdir, "jdk.net.jmod");
     Files.copy(jmodSrc, jmodDest);
 
     var zip = zipDirectory(dir);

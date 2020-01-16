@@ -31,15 +31,15 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
+    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.net.jmod");
     Files.createDirectory(Paths.get(scratch + "jmodDescribeTest"));
-    var jmodPath = Paths.get(scratch + "jmodDescribeTest/jdk.jsobject.jmod");
+    var jmodPath = Paths.get(scratch + "jmodDescribeTest/jdk.net.jmod");
 
     Files.copy(jmodPathSrc, jmodPath);
 
     var dir = jmodExtract(String(jmodPath));
 
-    assert.equal(dir, String(Paths.get(scratch + "jmodDescribeTest/jdk.jsobject")));
+    assert.equal(dir, String(Paths.get(scratch + "jmodDescribeTest/jdk.net")));
     var dirPath = Paths.get(dir);
     assert(Files.exists(dirPath));
     assert(Files.isDirectory(dirPath));

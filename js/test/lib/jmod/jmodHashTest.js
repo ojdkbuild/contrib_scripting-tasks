@@ -30,22 +30,25 @@ define([
     logger.info("run");
     Logger.disableModule("lib/jmod/jmodHash");
 
+    var System = Packages.java.lang.System;
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
     var dir = scratch + "jmodHashTest/";
     Files.createDirectory(Paths.get(dir));
-    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
-    var jmodPath = Paths.get(dir + "jdk.jsobject.jmod");
+    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.net.jmod");
+    var jmodPath = Paths.get(dir + "jdk.net.jmod");
     var jmodDepPath = Paths.get(dir + "jdk.testmod.jmod");
+    var jmodsDir = System.getProperty("java.home") + "/jmods/";
 
     Files.copy(jmodPathSrc, jmodPath);
     Files.copy(jmodPathSrc, jmodDepPath);
-
-    jmodHash(String(jmodPath), ["foo.jmod", "bar.jmod"]);
+    Files.copy(Paths.get(jmodsDir + "java.base.jmod"), Paths.get(dir + "java.base.jmod"));
 
     var orig = String(jmodPathSrc);
     var bundled = String(jmodPath);
+
+    jmodHash(bundled, ["mod.foo", "mod.bar"]);
 
     assert.equal(jmodDescribe(orig), jmodDescribe(bundled));
     assert.equal(jmodList(orig), jmodList(bundled));

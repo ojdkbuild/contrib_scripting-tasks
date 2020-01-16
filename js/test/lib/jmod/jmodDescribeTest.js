@@ -27,8 +27,8 @@ define([
 
     logger.info("run");
 
-    var desc = jmodDescribe(appdir + "js/test/data/jdk.jsobject.jmod");
+    var desc = jmodDescribe(appdir + "js/test/data/jdk.net.jmod");
 
-    assert(startsWith(desc[0], "jdk.jsobject"));
+    assert(startsWith(desc[0], "jdk.net"));
     assert(startsWith(desc[desc.length - 1], "platform "));
 });

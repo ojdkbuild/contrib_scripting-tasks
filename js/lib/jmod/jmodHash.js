@@ -40,9 +40,9 @@ define([
         }
 
         // '^(?!java.compiler$|jdk.aot$|jdk.internal.vm.compiler$|jdk.internal.vm.compiler.management$)'
-        var excludeRegex = "'.*'";
+        var excludeRegex = ".*";
         if (isArray(excludes)) {
-            excludeRegex = "'^(?!" + excludes.join("|") + ")$'";
+            excludeRegex = "^(?!" + excludes.join("$|") + "$)";
         }
         var args = [
             "--module-path",
@@ -69,9 +69,7 @@ define([
         var desc = jmodDescribe(file);
         assert(desc.length >= descOrig.length);
         for (var i = 0; i < desc.length && i < descOrig.length; i++) {
-            if (startsWith(desc[i], "hash")) {
-                assert(desc[i] != descOrig[i]);
-            } else {
+            if (!startsWith(desc[i], "hash")) {
                 assert.equal(desc[i], descOrig[i], "non-hash");
             }
         }

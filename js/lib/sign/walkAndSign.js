@@ -19,6 +19,7 @@ define([
     "module",
     // common
     "../common/endsWith",
+    "../common/isNil",
     "../common/startsWith",
     "../common/Logger",
     // io
@@ -28,6 +29,7 @@ define([
     "../jmod/jmodBundle",
     "../jmod/jmodDescribe",
     "../jmod/jmodExtract",
+    "../jmod/jmodHash",
     "../jmod/jmodList",
     // local
     "./signFile",
@@ -35,9 +37,9 @@ define([
     "test/assert"
 ], function(
         module, // module
-        endsWith, startsWith, Logger, // common
+        endsWith, isNil, startsWith, Logger, // common
         deleteDirectory, listDirectory, //io
-        jmodBundle, jmodDescribe, jmodExtract, jmodList, // jmod
+        jmodBundle, jmodDescribe, jmodExtract, jmodHash, jmodList, // jmod
         signFile, verifyFile, assert // local
 ) {
     "use strict";
@@ -86,6 +88,7 @@ define([
     function walkAndSign(dirPath, mock) {
         logger.info("Signing directory, path: [" + dirPath + "]");
         var list = listDirectory(String(dirPath.toAbsolutePath()));
+        var jbasePath = null;
         list.forEach(function(en) {
             var pa = Paths.get(dirPath, en);
             if (Files.isDirectory(pa)) {
@@ -103,9 +106,11 @@ define([
                 deleteDirectory(dir);
                 assert.equal(jmodDescribe(jmod), descOrig);
                 assert.equal(jmodList(jmod), contentsOrig);
-                var sizeDiff = Files.size(pa) - sizeOrig;
-                // todo: check with sig
+                //var sizeDiff = Files.size(pa) - sizeOrig;
                 //assert(sizeDiff >= -8 && sizeDiff <= 8);
+                if ("java.base.jmod" === en) {
+                    jbasePath = String(pa.toAbsolutePath());
+                }
             } else if(shouldSign(en)) {
                 logger.info("Signing file, path: [" + pa + "]");
                 var success = false;
@@ -131,6 +136,9 @@ define([
                 logger.info("Skipping file, path: [" + pa + "]");
             } 
         });
+        if (!isNil(jbasePath)) {
+            jmodHash(jbasePath);
+        }
     }
 
     return function(dir, mock) {

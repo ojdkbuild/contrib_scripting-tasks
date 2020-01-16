@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, akashche at redhat.com
+ * Copyright 2020, akashche at redhat.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,41 +18,31 @@ define([
     "module",
     "lib/common/appdir",
     "lib/common/Logger",
-    "lib/jmod/jmodBundle",
     "lib/jmod/jmodDescribe",
-    "lib/jmod/jmodExtract",
+    "lib/jmod/jmodHash",
     "lib/jmod/jmodList",
     "test/assert",
     "test/scratch"
-], function(module, appdir, Logger, jmodBundle, jmodDescribe, jmodExtract, jmodList, assert, scratch) {
+], function(module, appdir, Logger, jmodDescribe, jmodHash, jmodList, assert, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
     logger.info("run");
+    Logger.disableModule("lib/jmod/jmodHash");
 
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
+    var dir = scratch + "jmodHashTest/";
+    Files.createDirectory(Paths.get(dir));
     var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.jsobject.jmod");
-    Files.createDirectory(Paths.get(scratch + "jmodBundleTest"));
-    var jmodPath = Paths.get(scratch + "jmodBundleTest/jdk.jsobject.jmod");
+    var jmodPath = Paths.get(dir + "jdk.jsobject.jmod");
+    var jmodDepPath = Paths.get(dir + "jdk.testmod.jmod");
 
     Files.copy(jmodPathSrc, jmodPath);
+    Files.copy(jmodPathSrc, jmodDepPath);
 
-    var dir = jmodExtract(String(jmodPath));
-
-    Files.delete(jmodPath);
-
-    // invalid additional args
-    assert.throws(function() {
-        jmodBundle(dir, ["--INVALID-ARG"]);
-    });
-
-    jmodBundle(dir);
-
-    assert(Files.exists(jmodPath));
-    var sizeDiff = Files.size(jmodPath) - Files.size(jmodPathSrc);
-    //assert(sizeDiff >= -8 && sizeDiff <= 8);
+    jmodHash(String(jmodPath), ["foo.jmod", "bar.jmod"]);
 
     var orig = String(jmodPathSrc);
     var bundled = String(jmodPath);
@@ -60,6 +50,5 @@ define([
     assert.equal(jmodDescribe(orig), jmodDescribe(bundled));
     assert.equal(jmodList(orig), jmodList(bundled));
 
-    // currently it is not clear how to detect that
-    // additional flags were triggered for jdk.incubator.* modules
+    // it is non-trivial to actually add a hash here
 });

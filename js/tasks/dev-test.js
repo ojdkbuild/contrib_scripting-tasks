@@ -67,6 +67,7 @@ define([
                 "test/lib/zip/zipDirectoryTest",
                 "test/lib/zip/zipFileTest",
                 // tasks
+                "test/tasks/msi-checks_Test",
                 "test/tasks/sha256-file_Test",
                 "test/tasks/sign-file_Test",
                 "test/tasks/sign-zip_Test",

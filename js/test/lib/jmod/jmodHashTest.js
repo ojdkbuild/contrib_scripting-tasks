@@ -36,7 +36,7 @@ define([
 
     var dir = scratch + "jmodHashTest/";
     Files.createDirectory(Paths.get(dir));
-    var jmodPathSrc = Paths.get(appdir + "js/test/data/jdk.net.jmod");
+    var jmodPathSrc = Paths.get(System.getProperty("java.home") + "/jmods/jdk.net.jmod");
     var jmodPath = Paths.get(dir + "jdk.net.jmod");
     var jmodDepPath = Paths.get(dir + "jdk.testmod.jmod");
     var jmodsDir = System.getProperty("java.home") + "/jmods/";

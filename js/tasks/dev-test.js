@@ -50,7 +50,11 @@ define([
                 "test/lib/io/deleteDirectoryTest",
                 "test/lib/io/listDirectoryTest",
                 "test/lib/io/readFileTest",
+                "test/lib/io/withFileLinesTest",
                 "test/lib/io/writeFileTest",
+                // jcstress
+                "test/lib/jcstress/jcstressResultsTest",
+                "test/lib/jcstress/jcstressRunTest",
                 // jmod
                 "test/lib/jmod/jmodBundleTest",
                 "test/lib/jmod/jmodDescribeTest",
@@ -67,6 +71,7 @@ define([
                 "test/lib/zip/zipDirectoryTest",
                 "test/lib/zip/zipFileTest",
                 // tasks
+                "test/tasks/jcstress-run_Test",
                 "test/tasks/msi-checks_Test",
                 "test/tasks/sha256-file_Test",
                 "test/tasks/sign-file_Test",

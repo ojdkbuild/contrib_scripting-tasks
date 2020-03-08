@@ -1,0 +1,459 @@
+Java Concurrency Stress Tests
+---------------------------------------------------------------------------------
+Rev: 8c1fb007442c, built by alex with 11.0.6 at 2020-02-03T13:46:59Z
+
+Probing what VM modes are available:
+ (failures are non-fatal, but may miss some interesting cases)
+
+----- [OK] [-Xint]
+----- [OK] [-XX:TieredStopAtLevel=1]
+----- [OK] [-XX:-TieredCompilation]
+----- [N/A] [-XX:-TieredCompilation, -XX:+UnlockDiagnosticVMOptions, -XX:+StressLCM, -XX:+StressGCM]
+Error: Could not create the Java Virtual Machine.
+Error: A fatal exception has occurred. Program will exit.
+Error: VM option 'StressLCM' is develop and is available only in debug version of VM.
+
+
+
+Initializing and probing the target VM: 
+ (all failures are non-fatal, but may affect testing accuracy)
+
+----- [OK] Unlocking diagnostic VM options
+Burning up to figure out the exact CPU count....... done!
+
+----- [OK] Trimming down the default VM heap size to 1/4-th of max RAM
+----- [OK] Trimming down the number of compiler threads
+----- [OK] Trimming down the number of parallel GC threads
+----- [OK] Trimming down the number of concurrent GC threads
+----- [OK] Trimming down the number of G1 concurrent refinement GC threads
+----- [OK] Testing @Contended works on all results and infra objects
+----- [OK] Unlocking Whitebox API for online de-optimization
+----- [OK] Testing allocation profiling
+----- [FAILED] Trying Thread.onSpinWait
+Exception in thread "main" java.lang.NoSuchMethodError: java.lang.Thread.onSpinWait()V
+	at org.openjdk.jcstress.vm.ThreadSpinWaitTestMain.main(ThreadSpinWaitTestMain.java:30)
+
+
+  Hardware threads in use/available: 4/4, no yielding.
+  Test preset mode: "sanity"
+  Writing the test results to "jcstress-results-2020-02-26-12-27-29.bin.gz"
+  Parsing results to "results/"
+  Running each test matching ".*" for 1 forks, 1 iterations, 10 ms each
+  Each JVM would execute at most 100 tests in the row.
+  Solo stride size will be autobalanced within [10, 10000] elements, but taking no more than 100 Mb.
+
+       [OK] o.o.j.t.countdownlatch.effects.IntUnboundedTest
+(ETA:   00:00:29) (Rate: 4.94E+06 samples/sec) (Tests: 1 of 826) (Forks:  1 of 2478) (Iterations:  1 of 4956; 1 passed, 0 failed, 0 soft errs, 0 hard errs)                                                                                                                                                                                                                                                                                                                                [SKIPPED] o.o.j.t.varhandles.DekkerRelaxation2Test
+    Messages: 
+        Test sanity check failed, skipping
+        java.lang.NoSuchMethodError: java.lang.invoke.MethodHandles$Lookup.findVarHandle(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/VarHandle;
+	at org.openjdk.jcstress.tests.varhandles.DekkerRelaxation2Test.<clinit>(DekkerRelaxation2Test.java:48)
+	at org.openjdk.jcstress.tests.varhandles.DekkerRelaxation2Test_jcstress.sanityCheck_API(DekkerRelaxation2Test_jcstress.java:38)
+	at org.openjdk.jcstress.tests.varhandles.DekkerRelaxation2Test_jcstress.sanityCheck(DekkerRelaxation2Test_jcstress.java:32)
+	at org.openjdk.jcstress.infra.runners.Runner.run(Runner.java:73)
+	at org.openjdk.jcstress.EmbeddedExecutor.lambda$task$0(EmbeddedExecutor.java:81)
+	at org.openjdk.jcstress.EmbeddedExecutor.run(EmbeddedExecutor.java:72)
+	at org.openjdk.jcstress.ForkedMain.main(ForkedMain.java:58)
+
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2474 of 2478) (Iterations: 4889 of 4956; 4875 passed, 0 failed, 14 soft errs, 0 hard errs)                                                                                                                                                                             [OK] o.o.j.t.countdownlatch.waits.UnboundedDoubleTest
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2475 of 2478) (Iterations: 4890 of 4956; 4876 passed, 0 failed, 14 soft errs, 0 hard errs)                                                                                                                                                                             [OK] o.o.j.t.countdownlatch.waits.UnboundedDoubleTest
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2475 of 2478) (Iterations: 4891 of 4956; 4877 passed, 0 failed, 14 soft errs, 0 hard errs)                                                                                                                                                                        [SKIPPED] o.o.j.t.countdownlatch.racy.UnboundedSingleTest
+    Messages: 
+        Test sanity check failed, skipping
+        java.lang.NoSuchMethodError: java.lang.invoke.MethodHandles$Lookup.findVarHandle(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/VarHandle;
+	at org.openjdk.jcstress.tests.countdownlatch.racy.UnboundedSingleTest.<clinit>(UnboundedSingleTest.java:45)
+	at org.openjdk.jcstress.tests.countdownlatch.racy.UnboundedSingleTest_jcstress.sanityCheck_API(UnboundedSingleTest_jcstress.java:38)
+	at org.openjdk.jcstress.tests.countdownlatch.racy.UnboundedSingleTest_jcstress.sanityCheck(UnboundedSingleTest_jcstress.java:32)
+	at org.openjdk.jcstress.infra.runners.Runner.run(Runner.java:73)
+	at org.openjdk.jcstress.EmbeddedExecutor.lambda$task$0(EmbeddedExecutor.java:81)
+	at org.openjdk.jcstress.EmbeddedExecutor.run(EmbeddedExecutor.java:72)
+	at org.openjdk.jcstress.ForkedMain.main(ForkedMain.java:58)
+
+
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2476 of 2478) (Iterations: 4892 of 4956; 4877 passed, 0 failed, 15 soft errs, 0 hard errs)                                                                                                                                                                             [OK] o.o.j.t.volatiles.VolatileIRIWTest
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2477 of 2478) (Iterations: 4893 of 4956; 4878 passed, 0 failed, 15 soft errs, 0 hard errs)                                                                                                                                                                             [OK] o.o.j.t.volatiles.VolatileIRIWTest
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2477 of 2478) (Iterations: 4894 of 4956; 4879 passed, 0 failed, 15 soft errs, 0 hard errs)                                                                                                                                                                             [OK] o.o.j.t.volatiles.IRIWTest
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2478 of 2478) (Iterations: 4895 of 4956; 4880 passed, 0 failed, 15 soft errs, 0 hard errs)                                                                                                                                                                             [OK] o.o.j.t.volatiles.IRIWTest
+(ETA:   00:00:03) (Rate: 1.43E+06 samples/sec) (Tests: 826 of 826) (Forks: 2478 of 2478) (Iterations: 4896 of 4956; 4881 passed, 0 failed, 15 soft errs, 0 hard errs) 
+
+RUN COMPLETE.
+
+RUN RESULTS:
+------------------------------------------------------------------------------------------------------------------------
+
+*** INTERESTING tests
+  Some interesting behaviors observed. This is for the plain curiosity.
+
+  41 matching test results. 
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.DoubleTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+        Observed state   Occurrences              Expectation  Interpretation                                              
+  -4616189618054758400       147,828               ACCEPTABLE  Seeing the complete update.                                 
+  -4683743612465315840             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+                     0            67               ACCEPTABLE  Seeing the default value, this is valid under race.         
+     67553994410557440             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.FloatTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     -1082130432       327,893               ACCEPTABLE  Seeing the complete update.                                 
+               0            87               ACCEPTABLE  Seeing the default value, this is valid under race.         
+         8388608             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.FloatTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     -1082130432       340,139               ACCEPTABLE  Seeing the complete update.                                 
+     -1090519040            44   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0         6,953               ACCEPTABLE  Seeing the default value, this is valid under race.         
+         8388608           515   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.FloatTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     -1082130432         1,137               ACCEPTABLE  Seeing the complete update.                                 
+     -1090519040             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0           936               ACCEPTABLE  Seeing the default value, this is valid under race.         
+         8388608             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.IntTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       342,684               ACCEPTABLE  Seeing the complete update.                                 
+       -16711681             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+       -16711936             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+       -16776961             4   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+       -16777216            57   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+            -256           135   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          -65281             8   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          -65536            92   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0        10,255               ACCEPTABLE  Seeing the default value, this is valid under race.         
+        16711680            18   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+        16776960            20   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+        16777215            85   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+             255            67   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+           65280            16   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+           65535            76   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.LongTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       327,680               ACCEPTABLE  Seeing the complete update.                                 
+  -1099511627776             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          -65536             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0            39               ACCEPTABLE  Seeing the default value, this is valid under race.         
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.LongTest
+    (JVM args: [-Xint])
+      Observed state   Occurrences              Expectation  Interpretation                                              
+                  -1        90,111               ACCEPTABLE  Seeing the complete update.                                 
+         -4294967296             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+  -72057594037927936             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+                   0            10               ACCEPTABLE  Seeing the default value, this is valid under race.         
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.ShortTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       327,688               ACCEPTABLE  Seeing the complete update.                                 
+               0             0               ACCEPTABLE  Seeing the default value, this is valid under race.         
+             255             3   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferAtomicityTests.ShortTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       323,161               ACCEPTABLE  Seeing the complete update.                                 
+               0         8,042               ACCEPTABLE  Seeing the default value, this is valid under race.         
+             255           144   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.DoubleViewTest
+    (JVM args: [-XX:-TieredCompilation])
+        Observed state   Occurrences              Expectation  Interpretation                                              
+  -4616189618054758400        12,304               ACCEPTABLE  Seeing the complete update.                                 
+                     0            75               ACCEPTABLE  Seeing the default value, this is valid under race.         
+     67553994410557440             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.FloatViewTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     -1082130432       150,478               ACCEPTABLE  Seeing the complete update.                                 
+     -1090519040             8   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0         2,088               ACCEPTABLE  Seeing the default value, this is valid under race.         
+         8388608            11   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.IntViewTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       336,916               ACCEPTABLE  Seeing the complete update.                                 
+       -16711681             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+       -16776961             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+       -16777216             6   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+            -256             5   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          -65281             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          -65536             7   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0           698               ACCEPTABLE  Seeing the default value, this is valid under race.         
+        16711680             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+        16776960             4   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+        16777215            62   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+             255            38   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+           65280             3   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+           65535            45   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.IntViewTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1         6,195               ACCEPTABLE  Seeing the complete update.                                 
+       -16777216             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          -65281             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0           106               ACCEPTABLE  Seeing the default value, this is valid under race.         
+             255             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+           65535             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.LongViewTest
+    (JVM args: [-XX:-TieredCompilation])
+    Observed state   Occurrences              Expectation  Interpretation                                              
+                -1            82               ACCEPTABLE  Seeing the complete update.                                 
+  -281474976710656             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+                 0             0               ACCEPTABLE  Seeing the default value, this is valid under race.         
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.LongViewTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+      Observed state   Occurrences              Expectation  Interpretation                                              
+                  -1       213,708               ACCEPTABLE  Seeing the complete update.                                 
+      -1099511627776             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+    -281474976710656             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+         -4294967296             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+              -65536             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+  -72057594037927936             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+                   0            91               ACCEPTABLE  Seeing the default value, this is valid under race.         
+       1095233437695             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+       1099511627775             4   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+            16777215             6   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+                 255             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+     280379760050175             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+     281474976710655             3   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+          4294967295             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               65535             2   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+   71776119061217280             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+   72057594037927935             8   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.LongViewTest
+    (JVM args: [-Xint])
+   Observed state   Occurrences              Expectation  Interpretation                                              
+               -1        45,061               ACCEPTABLE  Seeing the complete update.                                 
+      -4294967296             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+                0             3               ACCEPTABLE  Seeing the default value, this is valid under race.         
+  281474976710655             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+            65535             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.ByteBufferViewsAtomicityTests.ShortViewTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       212,996               ACCEPTABLE  Seeing the complete update.                                 
+               0            26               ACCEPTABLE  Seeing the default value, this is valid under race.         
+             255             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.DirectByteBufferAtomicityTests.LongTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1        13,692               ACCEPTABLE  Seeing the complete update.                                 
+     -4294967296             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0           412               ACCEPTABLE  Seeing the default value, this is valid under race.         
+
+      [OK] o.o.j.t.atomicity.buffers.DirectByteBufferAtomicityTests.LongTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       155,803               ACCEPTABLE  Seeing the complete update.                                 
+               0         3,043               ACCEPTABLE  Seeing the default value, this is valid under race.         
+      4294967295             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+
+      [OK] o.o.j.t.atomicity.buffers.DirectByteBufferViewsAtomicityTests.LongViewTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1         7,164               ACCEPTABLE  Seeing the complete update.                                 
+     -4294967296             1   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0             4               ACCEPTABLE  Seeing the default value, this is valid under race.         
+
+      [OK] o.o.j.t.atomicity.buffers.LongBufferAtomicityTests.LongTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       111,419               ACCEPTABLE  Seeing the complete update.                                 
+     -4294967296             3   ACCEPTABLE_INTERESTING  All other cases are unexpected, but legal.                  
+               0         1,095               ACCEPTABLE  Seeing the default value, this is valid under race.         
+
+      [OK] o.o.j.t.atomicity.crosscache.ByteBufferIntAtomicityTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+  -1, -1, -1, -1       375,244               ACCEPTABLE  Seeing the full value, this is a legal behavior.            
+   -1, -1, -1, 0            22   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+   0, -1, -1, -1            17   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+    0, -1, -1, 0             5   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+    0, 0, -1, -1            15   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+     0, 0, -1, 0             9   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+     0, 0, 0, -1            16   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+      0, 0, 0, 0        22,603               ACCEPTABLE  Seeing the default value, this is a legal race.             
+
+      [OK] o.o.j.t.atomicity.crosscache.ByteBufferIntAtomicityTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+  -1, -1, -1, -1       327,706               ACCEPTABLE  Seeing the full value, this is a legal behavior.            
+   -1, -1, -1, 0             2   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+    -1, -1, 0, 0             1   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+   0, -1, -1, -1             1   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+    0, 0, -1, -1             1   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+      0, 0, 0, 0           750               ACCEPTABLE  Seeing the default value, this is a legal race.             
+
+      [OK] o.o.j.t.atomicity.crosscache.ByteBufferIntAtomicityTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+  -1, -1, -1, -1        45,365               ACCEPTABLE  Seeing the full value, this is a legal behavior.            
+   0, -1, -1, -1             1   ACCEPTABLE_INTERESTING  Seeing the full value, this is a legal behavior.            
+      0, 0, 0, 0           181               ACCEPTABLE  Seeing the default value, this is a legal race.             
+
+      [OK] o.o.j.t.atomicity.primitives.perbyte.LongAtomicityTest
+    (JVM args: [-XX:-TieredCompilation])
+                  Observed state   Occurrences              Expectation  Interpretation                                              
+  -1, -1, -1, -1, -1, -1, -1, -1       174,182               ACCEPTABLE  The value set by the actor thread. Observer sees the comp...
+      -1, -1, -1, -1, 0, 0, 0, 0             4   ACCEPTABLE_INTERESTING  Seeing the torn value. This is specifically allowed by JL...
+          0, 0, 0, 0, 0, 0, 0, 0         3,915               ACCEPTABLE  Default value for the field. Observers are allowed to see...
+
+      [OK] o.o.j.t.atomicity.primitives.perbyte.LongAtomicityTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+                  Observed state   Occurrences              Expectation  Interpretation                                              
+  -1, -1, -1, -1, -1, -1, -1, -1       233,761               ACCEPTABLE  The value set by the actor thread. Observer sees the comp...
+      0, 0, 0, 0, -1, -1, -1, -1            17   ACCEPTABLE_INTERESTING  Seeing the torn value. This is specifically allowed by JL...
+          0, 0, 0, 0, 0, 0, 0, 0         3,845               ACCEPTABLE  Default value for the field. Observers are allowed to see...
+
+      [OK] o.o.j.t.atomicity.primitives.reflect.LongAtomicityTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       339,261               ACCEPTABLE  The value set by the actor thread. Observer sees the comp...
+     -4294967296             1   ACCEPTABLE_INTERESTING  Seeing the torn value. This is specifically allowed by JL...
+               0         9,452               ACCEPTABLE  Default value for the field. Observers are allowed to see...
+      4294967295             7   ACCEPTABLE_INTERESTING  Seeing the torn value. This is specifically allowed by JL...
+
+      [OK] o.o.j.t.atomicity.primitives.reflect.LongAtomicityTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+              -1       328,392               ACCEPTABLE  The value set by the actor thread. Observer sees the comp...
+     -4294967296             4   ACCEPTABLE_INTERESTING  Seeing the torn value. This is specifically allowed by JL...
+               0         5,775               ACCEPTABLE  Default value for the field. Observers are allowed to see...
+
+      [OK] o.o.j.t.collections.HashMapFailureTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     0, 0, -1, 2           528   ACCEPTABLE_INTERESTING  Something went wrong                                        
+     0, 0, 1, -1           576   ACCEPTABLE_INTERESTING  Something went wrong                                        
+      0, 0, 1, 2        85,807               ACCEPTABLE  No exceptions, entire map is okay.                          
+
+      [OK] o.o.j.t.collections.HashMapFailureTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     0, 0, -1, 2         1,054   ACCEPTABLE_INTERESTING  Something went wrong                                        
+     0, 0, 1, -1           773   ACCEPTABLE_INTERESTING  Something went wrong                                        
+      0, 0, 1, 2       343,534               ACCEPTABLE  No exceptions, entire map is okay.                          
+
+      [OK] o.o.j.t.collections.HashMapFailureTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+     0, 0, -1, 2             1   ACCEPTABLE_INTERESTING  Something went wrong                                        
+     0, 0, 1, -1             1   ACCEPTABLE_INTERESTING  Something went wrong                                        
+      0, 0, 1, 2        45,055               ACCEPTABLE  No exceptions, entire map is okay.                          
+
+      [OK] o.o.j.t.executors.ThreadPoolExecutorKeepAliveTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            0, 0             1               ACCEPTABLE  keepAliveTime had changed, and allowCoreThreadTimeOut fai...
+            1, 0             1   ACCEPTABLE_INTERESTING  The update under race can break the (keepAliveTime == 0 &...
+            1, 1        90,111               ACCEPTABLE  allowCoreThreadTimeOut had changed, and keepAliveTime fai...
+
+      [OK] o.o.j.t.executors.ThreadPoolExecutorKeepAliveTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            0, 0           128               ACCEPTABLE  keepAliveTime had changed, and allowCoreThreadTimeOut fai...
+            1, 0            41   ACCEPTABLE_INTERESTING  The update under race can break the (keepAliveTime == 0 &...
+            1, 1        12,086               ACCEPTABLE  allowCoreThreadTimeOut had changed, and keepAliveTime fai...
+
+      [OK] o.o.j.t.executors.ThreadPoolExecutorSizesTest
+    (JVM args: [-XX:TieredStopAtLevel=1])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            1, 2             0               ACCEPTABLE  maxPoolSize had changed, and corePoolSize failed to change. 
+            3, 2        13,092   ACCEPTABLE_INTERESTING  The update under race can break the (core &#8804; maxPool...
+            3, 4        88,643               ACCEPTABLE  corePoolSize had changed, and maxPoolSize failed to change. 
+
+      [OK] o.o.j.t.executors.ThreadPoolExecutorSizesTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            1, 2             0               ACCEPTABLE  maxPoolSize had changed, and corePoolSize failed to change. 
+            3, 2            10   ACCEPTABLE_INTERESTING  The update under race can break the (core &#8804; maxPool...
+            3, 4        16,385               ACCEPTABLE  corePoolSize had changed, and maxPoolSize failed to change. 
+
+      [OK] o.o.j.t.fences.UnfencedDekkerTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            0, 0           822   ACCEPTABLE_INTERESTING  Acceptable with no sequential consistency enforced          
+            0, 1       347,781               ACCEPTABLE  Acceptable under sequential consistency                     
+            1, 0         1,347               ACCEPTABLE  Acceptable under sequential consistency                     
+            1, 1             1               ACCEPTABLE  Acceptable under sequential consistency                     
+
+      [OK] o.o.j.t.fences.UnfencedReadTwiceTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+         0, 0, 0         2,804               ACCEPTABLE  Consistent ordered reads.                                   
+         0, 0, 1             0               ACCEPTABLE  Consistent ordered reads.                                   
+         0, 1, 0           387   ACCEPTABLE_INTERESTING  Lost or reordered read of x.                                
+         0, 1, 1             0               ACCEPTABLE  Consistent ordered reads.                                   
+         1, 0, 0             0   ACCEPTABLE_INTERESTING  Lost or reordered read of x.                                
+         1, 0, 1             2               ACCEPTABLE  Consistent ordered reads.                                   
+         1, 1, 0             0   ACCEPTABLE_INTERESTING  Lost or reordered read of x.                                
+         1, 1, 1       339,888               ACCEPTABLE  Consistent ordered reads.                                   
+
+      [OK] o.o.j.t.strings.StringBuilderTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+         <ERROR>         2,740   ACCEPTABLE_INTERESTING  Other values are expected, threads are messing with each ...
+            bbbb       327,671               ACCEPTABLE  All appends are visible.                                    
+
+      [OK] o.o.j.t.threadlocal.ThreadLocalSharing
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            0, 0         5,678               ACCEPTABLE  All normal and racy results                                 
+            0, 1            86               ACCEPTABLE  All normal and racy results                                 
+            1, 0           123   ACCEPTABLE_INTERESTING  No memory effects                                           
+            1, 1        99,606               ACCEPTABLE  All normal and racy results                                 
+
+      [OK] o.o.j.t.volatiles.VolatileIncrementAtomicityTest
+    (JVM args: [-XX:-TieredCompilation])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            1, 1           100   ACCEPTABLE_INTERESTING  Each thread sees the same value, regardless of the update...
+            1, 2       330,091               ACCEPTABLE  Each thread sees its own increment, as if the increment i...
+            2, 1         8,750               ACCEPTABLE  Each thread sees its own increment, as if the increment i...
+
+      [OK] o.o.j.t.volatiles.VolatileIncrementAtomicityTest
+    (JVM args: [-Xint])
+  Observed state   Occurrences              Expectation  Interpretation                                              
+            1, 1             3   ACCEPTABLE_INTERESTING  Each thread sees the same value, regardless of the update...
+            1, 2       180,355               ACCEPTABLE  Each thread sees its own increment, as if the increment i...
+            2, 1           117               ACCEPTABLE  Each thread sees its own increment, as if the increment i...
+
+
+*** FAILED tests
+  Strong asserts were violated. Correct implementations should have no assert failures here.
+
+  0 matching test results. 
+
+*** ERROR tests
+  Tests break for some reason, other than failing the assert. Correct implementations should have none.
+
+  0 matching test results. 
+
+*** All remaining tests
+  Tests that do not fall into any of the previous categories.
+
+  2437 matching test results.  Use -v to print them.
+
+------------------------------------------------------------------------------------------------------------------------
+
+HTML report was generated. Look at results/index.html for the complete run results.
+
+Will throw any pending exceptions at this point.
+Done.

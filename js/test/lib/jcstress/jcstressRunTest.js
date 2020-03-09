@@ -30,7 +30,7 @@ define([
     logger.info("run");
 
     var outputFile = scratch + "jcstressRunTest.txt"
-    var code = jcstressRun("", outputFile, true);
+    var code = jcstressRun("", "", outputFile, true);
     assert.equal(code, 0);
     assert(Files.exists(Paths.get(outputFile)));
 

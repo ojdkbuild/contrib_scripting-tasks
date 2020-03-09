@@ -25,25 +25,51 @@ define([
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(javaHome, jcstressJar, resultsFile, mock) {
-        var jcPath = Paths.get(jcstressJar);
+    var excludes = [
+        "Compiler.compiler",
+        //"Compiler.sunflow",
+        //"Compress.test",
+        "CryptoAes.test",
+        //"CryptoRsa.test",
+        //"CryptoSignVerify.test",
+        "Derby.test",
+        //"MpegAudio.test",
+        "ScimarkFFT.large",
+        //"ScimarkFFT.small",
+        "ScimarkLU.large",
+        //"ScimarkLU.small",
+        //"ScimarkMonteCarlo.test",
+        "ScimarkSOR.large",
+        //"ScimarkSOR.small",
+        "ScimarkSparse.large",
+        "ScimarkSparse.small"
+        //"Serial.test",
+        //"Sunflow.test",
+        //"XmlTransform.test",
+        //"XmlValidation.test"
+    ];
+
+    return function(javaHome, specjvmJar, resultsFile, mock) {
+        var jcPath = Paths.get(specjvmJar);
         if (!(Files.exists(jcPath) && Files.isRegularFile(jcPath)) && (true !== mock)) {
-            throw new Error("Invalid 'jcstress.jar' file specified, path: [" + jcPath.toAbsolutePath() + "]");
+            throw new Error("Invalid 'specjvm.jar' file specified, path: [" + jcPath.toAbsolutePath() + "]");
         }
         var javaExe = javaHome + "/bin/java.exe";
         var javaPath = Paths.get(javaExe);
         if (!(Files.exists(javaPath) && Files.isRegularFile(javaPath)) && (true !== mock)) {
             throw new Error("Invalid 'javaHome' parameter specified, path: [" + javaPath.toAbsolutePath() + "]");
         }
+        var excludesRegex = "\"(" + excludes.join("|") + ")\"";
 
         if (true !== mock) {
             return new ProcessBuilder(
                     javaExe,
-                    "-jar", jcstressJar,
-                    "-m", "quick"
-                    ).inheritIO().redirectOutput(new File(resultsFile)).start().waitFor();
+                    "-jar", specjvmJar,
+                    "-t", "4",
+                    "-e", excludesRegex
+                    ).redirectOutput(new File(resultsFile)).start().waitFor();
         } else {
-            var mockSrc = Paths.get(appdir + "js/test/data/jcstress_results.txt");
+            var mockSrc = Paths.get(appdir + "js/test/data/specjvm_results.txt");
             var mockDest = Paths.get(resultsFile);
             Files.copy(mockSrc, mockDest);
             return 0;

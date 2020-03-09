@@ -18,29 +18,29 @@ define([
     "module",
     "lib/common/Logger",
     "lib/io/writeFile",
-    "lib/jcstress/jcstressResults",
-    "lib/jcstress/jcstressRun"
-], function(module, Logger, writeFile, jcstressResults, jcstressRun) {
+    "lib/specjvm/specjvmResults",
+    "lib/specjvm/specjvmRun"
+], function(module, Logger, writeFile, specjvmResults, specjvmRun) {
     "use strict";
     var logger = new Logger(module.id);
 
     var Files = Packages.java.nio.file.Files;
     var Paths = Packages.java.nio.file.Paths;
 
-    return function(javaHome, jcstressJar, resultsFile, mock) {
+    return function(javaHome, specjvmJar, resultsFile, mock) {
         logger.info("task started");
 
         var outFile = resultsFile + "_out.txt";
-        var code = jcstressRun(javaHome, jcstressJar, outFile, mock);
+        var code = specjvmRun(javaHome, specjvmJar, outFile, mock);
         if (0 !== code) {
-            throw new Error("jcstress run failure, code: [" + code + "]");
+            throw new Error("specjvm run failure, code: [" + code + "]");
         }
-        logger.info("jcstress run finished, processing results ...");
+        logger.info("specjvm run finished, processing results ...");
 
-        var lines = jcstressResults(outFile);
+        var lines = specjvmResults(outFile);
         Files.delete(Paths.get(outFile));
         writeFile(resultsFile, lines.join("\n"));
-        logger.info("jcstress results written, path: [" + resultsFile + "]");
+        logger.info("specjvm results written, path: [" + resultsFile + "]");
 
         logger.info("task success");
     };

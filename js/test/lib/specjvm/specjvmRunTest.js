@@ -17,10 +17,10 @@
 define([
     "module",
     "lib/common/Logger",
-    "tasks/jcstress-run",
+    "lib/specjvm/specjvmRun",
     "test/assert",
     "test/scratch"
-], function(module, Logger, task, assert, scratch) {
+], function(module, Logger, specjvmRun, assert, scratch) {
     "use strict";
     var logger = new Logger(module.id);
 
@@ -28,12 +28,10 @@ define([
     var Paths = Packages.java.nio.file.Paths;
 
     logger.info("run");
-    Logger.disableModule("tasks/jcstress-run");
 
-    var dir = scratch + "jcstress-run_Test/";
-    Files.createDirectory(Paths.get(dir));
-    var resFile = dir + "results.txt";
-    task("", "", resFile, true);
+    var outputFile = scratch + "specjvmRunTest.txt"
+    var code = specjvmRun("", "", outputFile, true);
+    assert.equal(code, 0);
+    assert(Files.exists(Paths.get(outputFile)));
 
-    assert(Files.exists(Paths.get(resFile)));
 });

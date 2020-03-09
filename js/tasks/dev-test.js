@@ -66,6 +66,9 @@ define([
                 "test/lib/sign/signFileTest",
                 "test/lib/sign/verifyFileTest",
                 "test/lib/sign/walkAndSignTest",
+                // specjvm
+                "test/lib/specjvm/specjvmResultsTest",
+                "test/lib/specjvm/specjvmRunTest",
                 // zip
                 "test/lib/zip/unzipFileTest",
                 "test/lib/zip/zipDirectoryTest",
@@ -76,6 +79,7 @@ define([
                 "test/tasks/sha256-file_Test",
                 "test/tasks/sign-file_Test",
                 "test/tasks/sign-zip_Test",
+                "test/tasks/specjvm-run_Test",
                 "test/tasks/unzip-file_Test",
                 "test/tasks/zip-dir_Test",
                 "test/tasks/zip-solid_Test"

@@ -34,17 +34,26 @@ define([
     var Paths = Packages.java.nio.file.Paths;
 
     var dir = Paths.get(scratch + "unzipFileTest");
-    Files.createDirectories(dir);
-    var foo = Paths.get(dir, "foo.txt");
-    var bar = Paths.get(dir, "bar.txt");
+    var zipDir = Paths.get(dir, "zipdir");
+    Files.createDirectories(zipDir);
+    var foo = Paths.get(zipDir, "foo.txt");
+    var bar = Paths.get(zipDir, "bar.txt");
     writeFile(String(foo), "foo");
     writeFile(String(bar), "bar");
-    var zip = zipDirectory(dir);
-    deleteDirectory(dir);
+    var zip = zipDirectory(zipDir);
+    deleteDirectory(zipDir);
 
+    // normal
     unzipFile(zip);
-    assert(Files.exists(dir) && Files.isDirectory(dir));
+    assert(Files.exists(zipDir) && Files.isDirectory(zipDir));
     assert.equal(readFile(String(foo)), "foo");
     assert.equal(readFile(String(bar)), "bar");
+
+    // nodir
+    deleteDirectory(zipDir);
+    unzipFile(zip, "nodirs");
+    assert(!Files.exists(zipDir));
+    assert.equal(readFile(Paths.get(dir, "foo.txt")), "foo");
+    assert.equal(readFile(Paths.get(dir, "bar.txt")), "bar");
 
 });

@@ -35,16 +35,31 @@ define([
     Logger.disableModule("tasks/unzip-file");
 
     var dir = Paths.get(scratch + "unzip-file_Test");
-    Files.createDirectories(dir);
-    var foo = Paths.get(dir, "foo.txt");
-    var bar = Paths.get(dir, "bar.txt");
+    var zipDir = Paths.get(dir, "zipdir");
+    Files.createDirectories(zipDir);
+    var foo = Paths.get(zipDir, "foo.txt");
+    var bar = Paths.get(zipDir, "bar.txt");
     writeFile(String(foo), "foo");
     writeFile(String(bar), "bar");
-    var zip = zipDirectory(dir);
-    deleteDirectory(dir);
+    var zip = zipDirectory(zipDir);
 
+    // normal
+    deleteDirectory(zipDir);
     task(zip);
-    assert(Files.exists(dir) && Files.isDirectory(dir));
+    assert(Files.exists(zipDir) && Files.isDirectory(zipDir));
+    assert.equal(readFile(String(foo)), "foo");
+    assert.equal(readFile(String(bar)), "bar");
+
+    // nodir
+    deleteDirectory(zipDir);
+    task(zip, "nodirs");
+    assert(!Files.exists(zipDir));
+    assert.equal(readFile(Paths.get(dir, "foo.txt")), "foo");
+    assert.equal(readFile(Paths.get(dir, "bar.txt")), "bar");
+
+    // asterisk
+    task(zip.replace(/zipd/, "*"));
+    assert(Files.exists(zipDir) && Files.isDirectory(zipDir));
     assert.equal(readFile(String(foo)), "foo");
     assert.equal(readFile(String(bar)), "bar");
 });

@@ -17,16 +17,22 @@
 define([
     "module",
     "lib/common/Logger",
+    "lib/io/listAsterisk",
     "lib/zip/unzipFile"
-], function(module, Logger, unzipFile) {
+], function(module, Logger, listAsterisk, unzipFile) {
     "use strict";
     var logger = new Logger(module.id);
 
-    return function(zipFile) {
+    return function(zipFile, opts) {
         logger.info("task started");
-        logger.info("Unzipping file, path: [" + zipFile + "]");
 
-        unzipFile(zipFile);
+        // expand asterisk of any
+        var list = listAsterisk(zipFile);
+
+        list.forEach(function(fi) {
+            logger.info("Unzipping file, path: [" + fi + "]");
+            unzipFile(fi, opts);
+        });
 
         logger.info("task success");
     };

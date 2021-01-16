@@ -35,7 +35,7 @@ define([
         }
     }
 
-    return function(zipFile) {
+    return function(zipFile, opt) {
         var path = Paths.get(zipFile);
         if (!Files.isRegularFile(path)) {
             throw new Error("Invalid input file specified, path: [" + path.toAbsolutePath() + "]");
@@ -44,6 +44,8 @@ define([
         if (null === dir) {
             throw new Error("Invalid parent directory, path: [" + path.toAbsolutePath() + "]");
         }
+
+        var nodirs = "nodirs" === opt;
 
         var is = new FileInputStream(zipFile);
         try {
@@ -55,8 +57,13 @@ define([
                     throw new Error("Invalid ZIP entry, path: [" + entry.getName() + "]");
                 }
                 if (entry.isDirectory()) {
-                    Files.createDirectories(path);
+                    if (!nodirs) {
+                        Files.createDirectories(path);
+                    }
                 } else {
+                    if (nodirs) { // strip entry dir part
+                        path = Paths.get(dir, path.getFileName());
+                    }
                     writeFile(path, zis);
                 }
                 zis.closeEntry();

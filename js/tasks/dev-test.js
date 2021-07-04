@@ -55,17 +55,6 @@ define([
                 // jcstress
                 "test/lib/jcstress/jcstressResultsTest",
                 "test/lib/jcstress/jcstressRunTest",
-                // jmod
-                "test/lib/jmod/jmodBundleTest",
-                "test/lib/jmod/jmodDescribeTest",
-                "test/lib/jmod/jmodExtractTest",
-                "test/lib/jmod/jmodHashTest",
-                "test/lib/jmod/jmodListTest",
-                "test/lib/jmod/jmodToolTest",
-                // sign
-                "test/lib/sign/signFileTest",
-                "test/lib/sign/verifyFileTest",
-                "test/lib/sign/walkAndSignTest",
                 // specjvm
                 "test/lib/specjvm/specjvmResultsTest",
                 "test/lib/specjvm/specjvmRunTest",
@@ -77,8 +66,6 @@ define([
                 "test/tasks/jcstress-run_Test",
                 "test/tasks/msi-checks_Test",
                 "test/tasks/sha256-file_Test",
-                "test/tasks/sign-file_Test",
-                "test/tasks/sign-zip_Test",
                 "test/tasks/specjvm-run_Test",
                 "test/tasks/unzip-file_Test",
                 "test/tasks/zip-dir_Test",

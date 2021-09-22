@@ -58,6 +58,9 @@ define([
                 // specjvm
                 "test/lib/specjvm/specjvmResultsTest",
                 "test/lib/specjvm/specjvmRunTest",
+                // xml-js
+                "test/lib/xml-js/js2xmlTest",
+                "test/lib/xml-js/xml2jsTest",
                 // zip
                 "test/lib/zip/unzipFileTest",
                 "test/lib/zip/zipDirectoryTest",

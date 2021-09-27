@@ -46,19 +46,27 @@ define([
             };
         },
 
-        feature: function(vendorPrefix) {
+        feature: function(idPrefix, vendorPrefix) {
             return {
                 type: "element",
                 name: "Feature",
                 attributes: {
-                    Id: "jdk_env_vendor_java_home",
+                    Id: idPrefix + "_env_vendor_java_home",
                     Absent: "allow",
                     AllowAdvertise: "no",
                     Level: "2",
                     Title: vendorPrefix + "_JAVA_HOME Variable",
                     Description: "Sets '" + vendorPrefix + "_JAVA_HOME' system environment variable."
                 },
-                "elements": []
+                "elements": [
+                    {
+                        "type": "element",
+                        "name": "ComponentRef",
+                        "attributes": {
+                            "Id": "comp_env_vendor_java_home"
+                        }
+                    }
+                ]
             };
         }
     };

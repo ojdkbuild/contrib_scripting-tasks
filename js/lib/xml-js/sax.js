@@ -338,11 +338,11 @@ define(function(localRequire, exports, module) { var requireOrig = require; requ
   }
 
   sax.ENTITIES = {
-    'amp': '&',
-    'gt': '>',
-    'lt': '<',
-    'quot': '"',
-    'apos': "'",
+    'amp': '&amp;',
+    'gt': '&gt;',
+    'lt': '&lt;',
+    'quot': '&quot;',
+    'apos': "&apos;",
     'AElig': 198,
     'Aacute': 193,
     'Acirc': 194,

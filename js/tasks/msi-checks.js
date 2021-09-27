@@ -39,10 +39,14 @@ define([
             return "jdk11jre";
         } else if (startsWith(msi, "java-11-openjdk")) {
             return "jdk11";
-        } else if (-1 != msi.indexOf("openjdk-jre")) {
-            return "jdklatestjre";
+        } else if (startsWith(msi, "java-17-openjdk")) {
+            if (-1 !== msi.indexOf(".jre.")) {
+                return "jdk17jre";
+            } else {
+                return "jdk17";
+            }
         } else {
-            return "jdklatest";
+            throw new Error("Unrecognized MSI name: [" + msi + "]");
         }
     }
 
@@ -69,6 +73,9 @@ define([
 
         var javaExec = System.getProperty("java.home") + "/bin/java.exe";
         var jtregJar = appdir + "../../tools/jtreg42_653/lib/jtreg.jar";
+        if (msiList.length > 0 && startsWith(msiList[0], "java-17-openjdk")) {
+            var jtregJar = appdir + "../../tools/jtreg60_6583a8c/lib/jtreg.jar";
+        }
         var checkDir = appdir + "../installer-checks/";
         msiList.forEach(function(msi) {
             logger.info("Running checks for MSI, name: [" + msi + "]");
